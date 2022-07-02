@@ -1,12 +1,14 @@
 import React from "react";
-import { Row, Col, Container, Button } from "react-bootstrap";
+import { Link } from "react-router-dom";
+import { Row, Col, Container, Button, Carousel } from "react-bootstrap";
 import homepageHouse from "../../../images/homepage-house.svg";
 import trusted from "../../../images/trusted.svg";
 import whyChoose from "../../../images/why-choose.svg";
 import getAProperty from "../../../images/get-a-property.svg";
-import clients from "../../../images/clients.svg";
-import footer from "../../../images/footer.svg";
-// import Footer from "../../common/Footer";
+import client1 from "../../../images/client1.svg";
+import client2 from "../../../images/client2.svg";
+import client3 from "../../../images/client3.svg";
+import Footer from "../../common/Footer";
 
 export const HomePage = () => {
   return (
@@ -24,9 +26,11 @@ export const HomePage = () => {
               Let us take the hassle of house hunting off your shoulder for a
               small fee
             </p>
-            <Button variant="dark" size="lg">
-              Get Started
-            </Button>
+            <Link to="/find-a-property">
+              <Button variant="dark" size="lg">
+                Find a property
+              </Button>
+            </Link>
           </Col>
           <Col sm={12} md={6}>
             <img
@@ -66,14 +70,25 @@ export const HomePage = () => {
       </Container>
 
       <Container>
-        <div className="">
-          <img src={clients} alt="Clients" width="100%" />
+        <div className="text-center mb-5">
+          <h1 className="display-4" style={{ fontWeight: "bold" }}>
+            What our clients say
+          </h1>
         </div>
+        <Carousel>
+          <Carousel.Item>
+            <img src={client1} className="d-block w-100" alt="" height={450} />
+          </Carousel.Item>
+          <Carousel.Item>
+            <img src={client2} className="d-block w-100" alt="" height={450} />
+          </Carousel.Item>
+          <Carousel.Item>
+            <img src={client3} className="d-block w-100" alt="" height={450} />
+          </Carousel.Item>
+        </Carousel>
       </Container>
 
-      <div className="">
-        <img src={footer} alt="Footer" width="100%" />
-      </div>
+      <Footer />
     </div>
   );
 };

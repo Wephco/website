@@ -7,7 +7,7 @@ export const TopNav = () => {
   return (
     <Navbar expand="lg">
       <Container>
-        <Navbar.Brand>
+        <Navbar.Brand href="/">
           <img src={logo} alt="logo" />
         </Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
@@ -52,10 +52,14 @@ export const TopNav = () => {
           </Nav>
           <Nav className="me-auto">
             <Nav.Item className="mx-2 my-1">
-              <Button variant="outline-dark">Log in</Button>
+              <Link to="/login">
+                <Button variant="outline-dark">Log in</Button>
+              </Link>
             </Nav.Item>
             <Nav.Item className="mx-2 my-1">
-              <Button variant="dark">Get started</Button>
+              <Link to="/register">
+                <Button variant="dark">Get started</Button>
+              </Link>
             </Nav.Item>
           </Nav>
         </Navbar.Collapse>

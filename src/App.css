@@ -1,1 +1,9 @@
-
+button.nav-link {
+    background-color: transparent !important;
+    color: #000000 !important;
+    
+}
+.nav-link.active {
+    background-color: red !important;
+    color: white !important;
+}
