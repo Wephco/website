@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { Row, Col, Container, Button, Carousel } from "react-bootstrap";
-import homepageHouse from "../../../images/homepage-house.svg";
+import homepageHouse from "../../../images/homepage-house.png";
 import trusted from "../../../images/trusted.svg";
 import whyChoose from "../../../images/why-choose.svg";
 import getAProperty from "../../../images/get-a-property.svg";

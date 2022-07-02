@@ -1,5 +1,5 @@
 import React from "react";
-import findAHome from "../../../images/find-a-home.svg";
+import findAHome from "../../../images/find-a-home.png";
 import PropertyMenu from "./PropertyMenu";
 import Footer from "../../common/Footer";
 
