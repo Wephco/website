@@ -43,7 +43,7 @@ export const HomePage = () => {
         </Row>
       </Container>
 
-      <div classNAme="trusted-by mt-5">
+      <div className="trusted-by mt-5">
         <div className="trusted-by-text text-center">
           <h4>Trusted By Reputable Nigerian Companies</h4>
         </div>

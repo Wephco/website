@@ -1,27 +1,47 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
+import { AppContext } from "../../../context/AppContext";
 import { Tabs, Tab, Form, Row, Col, Button, Container } from "react-bootstrap";
+import { useNavigate } from "react-router-dom";
+// import { formatNumber } from "../../../utils/formatNumber";
 
 const MenuForm = () => {
+  const { appState, changeState } = useContext(AppContext);
+
+  const navigate = useNavigate();
+
   const [location, setLocation] = useState("");
   const [property, setProperty] = useState("");
   const [bedroom, setBedroom] = useState(0);
-  const [budget, setBudget] = useState("");
+  const [budget, setBudget] = useState("0");
 
-  const changeLocation = (event) => {
+  const changeLocation = async (event) => {
+    changeState("location", event.target.value);
+
     setLocation(event.target.value);
   };
 
-  const selectProperty = (event) => {
+  const selectProperty = async (event) => {
+    changeState("property", event.target.value);
     setProperty(event.target.value);
   };
 
-  const selectBedroom = (event) => {
+  const selectBedroom = async (event) => {
+    changeState("bedroom", event.target.value);
     setBedroom(event.target.value);
   };
 
-  const changeBudget = (event) => {
-    var str = event.target.value.toLocaleString("en-US");
-    setBudget(str);
+  const changeBudget = async (event) => {
+    changeState("budget", event.target.value);
+    setBudget(event.target.value);
+  };
+
+  const continueRequest = async () => {
+    const authenticated = appState.isAuthenticated;
+    if (!authenticated) {
+      navigate("/login");
+    } else {
+      navigate("/real-estate/review");
+    }
   };
 
   return (
@@ -59,7 +79,7 @@ const MenuForm = () => {
             <Form.Control type="text" value={budget} onChange={changeBudget} />
           </Col>
           <Col>
-            <Button className="mt-4" variant="dark">
+            <Button onClick={continueRequest} className="mt-4" variant="dark">
               Continue
             </Button>
           </Col>
