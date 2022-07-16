@@ -23,7 +23,7 @@ const PropertyReview = () => {
     reference: new Date().getTime().toString(),
     email: appState.email,
     amount: serviceCharge * 100,
-    publicKey: "pk_test_59ef640141ed87985a682ea9c43b60d542349fa8",
+    publicKey: "pk_live_901de7c33d05fe01fbdd46cf921da1bd3de22431",
   };
 
   const onSuccess = (reference) => {
