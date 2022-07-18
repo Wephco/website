@@ -3,9 +3,14 @@ import { Container, Form, Row, Button, Col } from "react-bootstrap";
 import { AppContext } from "../../../context/AppContext";
 import { formatNumber } from "../../../utils/formatNumber";
 import { usePaystackPayment } from "react-paystack";
+import axios from "axios";
+import { endpoints } from "../../../utils/URL";
+import { useNavigate } from "react-router-dom";
 
 const PropertyReview = () => {
   const { appState } = useContext(AppContext);
+
+  const navigate = useNavigate();
 
   const [serviceCharge, setServiceCharge] = useState(0);
 
@@ -21,19 +26,19 @@ const PropertyReview = () => {
 
   const config = {
     reference: new Date().getTime().toString(),
-    email: appState.email,
+    email: sessionStorage.getItem("email"),
     amount: serviceCharge * 100,
     publicKey: "pk_live_901de7c33d05fe01fbdd46cf921da1bd3de22431",
   };
 
-  const onSuccess = (reference) => {
-    // TODO: make API call to store paystack reference details
-    console.log("success");
+  const onSuccess = async (reference) => {
+    //make API call to store paystack reference details
+    await axios.post(endpoints.References.postNewReference, reference);
+    navigate("/thank-you");
   };
 
   const onClose = () => {
-    // navigate to Thank you page.
-    console.log("close");
+    console.log("Payment Closed");
   };
 
   useEffect(() => {

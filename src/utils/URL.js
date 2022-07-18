@@ -13,6 +13,9 @@ let endpoints = {
     getAllRequests: BASE_URL + "/real-estate",
     postNewRequest: BASE_URL + "/real-estate/new-request",
   },
+  References: {
+    postNewReference: BASE_URL + "/reference",
+  },
 };
 
 module.exports = { endpoints, BASE_URL };

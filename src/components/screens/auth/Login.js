@@ -1,11 +1,17 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { Row, Col, Container, Form, Button } from "react-bootstrap";
 import authImage from "../../../images/auth.png";
 import Footer from "../../common/Footer";
 import { endpoints } from "../../../utils/URL";
 import axios from "axios";
+import { AppContext } from "../../../context/AppContext";
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
+  const { changeState } = useContext(AppContext);
+
+  const navigate = useNavigate();
+
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
   const [loading, setLoading] = useState(false);
@@ -27,7 +33,15 @@ const Login = () => {
       };
       const response = await axios.post(endpoints.Auth.login, payload);
       if (response.status === 200) {
-        // TODO: Implement successful login logic here.
+        const userData = response.data;
+        sessionStorage.setItem("name", userData.name);
+        sessionStorage.setItem("email", userData.user);
+        sessionStorage.setItem("phone", userData.phone);
+        // await changeState("name", userData.name);
+        // await changeState("email", userData.user);
+        // await changeState("phone", userData.phone);
+        await changeState("isAuthenticated", true);
+        navigate("/find-a-property");
       } else if (response.status === 400 || response.status === 401) {
         alert("Email/Phone incorrect");
       } else {

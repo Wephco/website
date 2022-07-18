@@ -4,8 +4,11 @@ import authImage from "../../../images/auth.png";
 import Footer from "../../common/Footer";
 import { endpoints } from "../../../utils/URL";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const Register = () => {
+  const navigate = useNavigate();
+
   const [localState, setLocalState] = useState({
     name: "",
     phone: "",
@@ -32,7 +35,7 @@ const Register = () => {
       const response = await axios.post(endpoints.Auth.register, payload);
 
       if (response.status === 200) {
-        // TODO: Implement successful login logic here.
+        navigate("/login");
       } else if (response.status === 400 || response.status === 401) {
         alert("Please check your input and try again.");
       } else {

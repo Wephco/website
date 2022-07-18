@@ -7,6 +7,7 @@ import { TopNav } from "./components/common/TopNav";
 import { HomePage } from "./components/screens/landing/HomePage";
 import PropertyHome from "./components/screens/property/PropertyHome";
 import PropertyReview from "./components/screens/property/PropertyReview";
+import ThankYou from "./components/common/ThankYou";
 
 // Auth
 import Login from "./components/screens/auth/Login";
@@ -27,6 +28,7 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/find-a-property" element={<PropertyHome />} />
           <Route path="/real-estate/review" element={<PropertyReview />} />
+          <Route path="/thank-you" element={<ThankYou />} />
         </Routes>
       </BrowserRouter>
     </AppProvider>
