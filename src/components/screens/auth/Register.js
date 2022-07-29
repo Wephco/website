@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Row, Col, Container, Form, Button } from "react-bootstrap";
+import { Row, Col, Container, Form, Button, Card } from "react-bootstrap";
 import authImage from "../../../images/auth.png";
 import Footer from "../../common/Footer";
 import { endpoints } from "../../../utils/URL";
@@ -16,6 +16,8 @@ const Register = () => {
   });
   const [loading, setLoading] = useState(false);
 
+  const [paymentPlan, setPaymentPlan] = useState("");
+
   const handleChange = (input) => (event) => {
     setLocalState({
       ...localState,
@@ -24,12 +26,25 @@ const Register = () => {
   };
 
   const register = async () => {
+    if (paymentPlan === "") {
+      alert("Please click on the cards to choose a payment plan");
+      return;
+    }
+    if (
+      localState.email === "" ||
+      localState.name === "" ||
+      localState.phone === ""
+    ) {
+      alert("Please fill the form to continue");
+      return;
+    }
     setLoading(true);
     try {
       const payload = {
         name: localState.name,
         phone: localState.phone,
         email: localState.email,
+        paymentPlan: paymentPlan,
       };
 
       const response = await axios.post(endpoints.Auth.register, payload);
@@ -46,6 +61,10 @@ const Register = () => {
     } finally {
       setLoading(false);
     }
+  };
+
+  const selectPaymentPlan = (plan) => {
+    setPaymentPlan(plan);
   };
 
   return (
@@ -87,6 +106,62 @@ const Register = () => {
                       value={localState.email}
                       onChange={handleChange("email")}
                     />
+                  </Form.Group>
+                  <Form.Group className="mb-5">
+                    <h3 className="text-center">Payment Plans</h3>
+                    <Row>
+                      <Col className="my-2" sm={12} md={6}>
+                        <Card
+                          bg={paymentPlan === "Basic" ? "info" : ""}
+                          text={paymentPlan === "Basic" ? "white" : "dark"}
+                          className="text-center"
+                          onClick={() => selectPaymentPlan("Basic")}
+                        >
+                          <Card.Header>BASIC</Card.Header>
+                          <Card.Body>
+                            <Card.Text>
+                              <ul>
+                                <li>1% Service Charge</li>
+                                <li>Maximum of 3 Properties</li>
+                                <li>
+                                  You will be linked with the agent in-charge of
+                                  the house
+                                </li>
+                                <li>Inspection fees would be paid</li>
+                                <li>We won't be present during inspections</li>
+                              </ul>
+                            </Card.Text>
+                          </Card.Body>
+                        </Card>
+                      </Col>
+                      <Col className="my-2" sm={12} md={6}>
+                        <Card
+                          bg={paymentPlan === "Classic" ? "info" : ""}
+                          text={paymentPlan === "Classic" ? "white" : "dark"}
+                          className="text-center"
+                          onClick={() => selectPaymentPlan("Classic")}
+                        >
+                          <Card.Header>CLASSIC</Card.Header>
+                          <Card.Body>
+                            <Card.Text>
+                              <ul>
+                                <li>2% Service Charge</li>
+                                <li>Maximum of 7 Properties</li>
+                                <li>
+                                  Wephco will be fully involved with the agent
+                                  to secure the house
+                                </li>
+                                <li>No Inspection fee</li>
+                                <li>
+                                  A Wephco rep will be present during
+                                  inspections
+                                </li>
+                              </ul>
+                            </Card.Text>
+                          </Card.Body>
+                        </Card>
+                      </Col>
+                    </Row>
                   </Form.Group>
                   {loading ? (
                     <div class="spinner-border text-dark" role="status">
