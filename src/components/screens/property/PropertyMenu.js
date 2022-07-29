@@ -107,9 +107,9 @@ const MenuForm = () => {
               <Form.Label>Property</Form.Label>
               <Form.Select value={property} onChange={selectProperty}>
                 <option value="-">-</option>
-                <option value="House">House</option>
-                <option value="Flat/Apartment">Flat/Apartment</option>
-                <option value="Office">Office</option>
+                <option value="Residential">Residential</option>
+                <option value="Commercial">Commercial</option>
+                <option value="Serviced Apartment">Serviced Apartment</option>
                 <option value="Land">Land</option>
               </Form.Select>
             </Col>
