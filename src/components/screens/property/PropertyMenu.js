@@ -2,7 +2,9 @@ import React, { useState, useContext } from "react";
 import { AppContext } from "../../../context/AppContext";
 import { Tabs, Tab, Form, Row, Col, Button, Container } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
-// import { formatNumber } from "../../../utils/formatNumber";
+import axios from "axios";
+import { endpoints } from "../../../utils/URL";
+import { formatNumber } from "../../../utils/formatNumber";
 
 const MenuForm = () => {
   const { appState, changeState } = useContext(AppContext);
@@ -13,6 +15,7 @@ const MenuForm = () => {
   const [property, setProperty] = useState("");
   const [bedroom, setBedroom] = useState(0);
   const [budget, setBudget] = useState("0");
+  const [loading, setLoading] = useState(false);
 
   const changeLocation = async (event) => {
     changeState("location", event.target.value);
@@ -33,6 +36,32 @@ const MenuForm = () => {
   const changeBudget = async (event) => {
     changeState("budget", event.target.value);
     setBudget(event.target.value);
+  };
+
+  const sendDetails = async () => {
+    try {
+      setLoading(true);
+
+      const payload = {
+        name: appState.name,
+        email: appState.email,
+        phone: appState.phone,
+        location: location,
+        property: property,
+        bedroom: bedroom,
+        budget: formatNumber(parseFloat(budget)),
+      };
+
+      await axios.post(endpoints.RealEstateRequests.postNewRequest, payload);
+
+      navigate("/real-estate/review");
+    } catch (error) {
+      alert(
+        "We're experiencing some downtime at the moment. Please try again later"
+      );
+    } finally {
+      setLoading(false);
+    }
   };
 
   const continueRequest = async () => {
@@ -56,53 +85,60 @@ const MenuForm = () => {
     if (!authenticated) {
       navigate("/login");
     } else {
-      navigate("/real-estate/review");
+      // make API call to send details to database
+      await sendDetails();
     }
   };
 
   return (
     <div>
       <Form>
-        <Row>
-          <Col>
-            <Form.Label>Location</Form.Label>
-            <Form.Control
-              type="text"
-              value={location}
-              onChange={changeLocation}
-            />
-          </Col>
-          <Col>
-            <Form.Label>Property</Form.Label>
-            <Form.Select value={property} onChange={selectProperty}>
-              <option value="-">-</option>
-              <option value="House">House</option>
-              <option value="Flat/Apartment">Flat/Apartment</option>
-              <option value="Office">Office</option>
-              <option value="Land">Land</option>
-            </Form.Select>
-          </Col>
-          <Col>
-            <Form.Label>Bedroom</Form.Label>
-            <Form.Select value={bedroom} onChange={selectBedroom}>
-              <option value={0}>-</option>
-              <option value={1}>1</option>
-              <option value={2}>2</option>
-              <option value={3}>3</option>
-              <option value={4}>4</option>
-              <option value={5}>5</option>
-            </Form.Select>
-          </Col>
-          <Col>
-            <Form.Label>Budget</Form.Label>
-            <Form.Control type="text" value={budget} onChange={changeBudget} />
-          </Col>
-          <Col>
-            <Button onClick={continueRequest} className="mt-4" variant="dark">
-              Continue
-            </Button>
-          </Col>
-        </Row>
+        <fieldset disabled={loading}>
+          <Row>
+            <Col>
+              <Form.Label>Location</Form.Label>
+              <Form.Control
+                type="text"
+                value={location}
+                onChange={changeLocation}
+              />
+            </Col>
+            <Col>
+              <Form.Label>Property</Form.Label>
+              <Form.Select value={property} onChange={selectProperty}>
+                <option value="-">-</option>
+                <option value="House">House</option>
+                <option value="Flat/Apartment">Flat/Apartment</option>
+                <option value="Office">Office</option>
+                <option value="Land">Land</option>
+              </Form.Select>
+            </Col>
+            <Col>
+              <Form.Label>Bedroom</Form.Label>
+              <Form.Select value={bedroom} onChange={selectBedroom}>
+                <option value={0}>-</option>
+                <option value={1}>1</option>
+                <option value={2}>2</option>
+                <option value={3}>3</option>
+                <option value={4}>4</option>
+                <option value={5}>5</option>
+              </Form.Select>
+            </Col>
+            <Col>
+              <Form.Label>Budget</Form.Label>
+              <Form.Control
+                type="text"
+                value={budget}
+                onChange={changeBudget}
+              />
+            </Col>
+            <Col>
+              <Button onClick={continueRequest} className="mt-4" variant="dark">
+                Continue
+              </Button>
+            </Col>
+          </Row>
+        </fieldset>
       </Form>
     </div>
   );

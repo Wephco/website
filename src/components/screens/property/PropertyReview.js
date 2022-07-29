@@ -39,8 +39,13 @@ const PropertyReview = () => {
       reference: reference,
       notes: notes,
     };
-    await axios.post(endpoints.References.postNewReference, payload);
-    navigate("/thank-you");
+    const response = await axios.post(
+      endpoints.References.postNewReference,
+      payload
+    );
+    if (response.status === 200) {
+      navigate("/thank-you");
+    }
   };
 
   const onClose = () => {
