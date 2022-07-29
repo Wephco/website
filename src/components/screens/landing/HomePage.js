@@ -20,7 +20,7 @@ export const HomePage = () => {
               Buy, Rent or Sell
             </h1>
             <h1 className="display-4" style={{ fontWeight: "bold" }}>
-              properties in Abuja
+              properties through Technology
             </h1>
             <p>
               Let us take the hassle of house hunting off your shoulder for a

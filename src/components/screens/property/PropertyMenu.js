@@ -36,6 +36,22 @@ const MenuForm = () => {
   };
 
   const continueRequest = async () => {
+    if (location === "") {
+      alert("Please enter a location.");
+      return;
+    }
+    if (property === "") {
+      alert("Please select a property.");
+      return;
+    }
+    // if (bedroom === 0) {
+    //   alert("Please select bedroom size.");
+    //   return;
+    // }
+    if (budget === "0") {
+      alert("Please enter your budget");
+      return;
+    }
     const authenticated = appState.isAuthenticated;
     if (!authenticated) {
       navigate("/login");
@@ -59,14 +75,17 @@ const MenuForm = () => {
           <Col>
             <Form.Label>Property</Form.Label>
             <Form.Select value={property} onChange={selectProperty}>
+              <option value="-">-</option>
               <option value="House">House</option>
               <option value="Flat/Apartment">Flat/Apartment</option>
               <option value="Office">Office</option>
+              <option value="Land">Land</option>
             </Form.Select>
           </Col>
           <Col>
             <Form.Label>Bedroom</Form.Label>
             <Form.Select value={bedroom} onChange={selectBedroom}>
+              <option value={0}>-</option>
               <option value={1}>1</option>
               <option value={2}>2</option>
               <option value={3}>3</option>

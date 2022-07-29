@@ -14,6 +14,8 @@ const PropertyReview = () => {
 
   const [serviceCharge, setServiceCharge] = useState(0);
 
+  const [notes, setNotes] = useState("");
+
   const getServiceCharge = useCallback(async () => {
     const charge = appState.budget * 0.01;
     setServiceCharge(charge);
@@ -33,7 +35,11 @@ const PropertyReview = () => {
 
   const onSuccess = async (reference) => {
     //make API call to store paystack reference details
-    await axios.post(endpoints.References.postNewReference, reference);
+    const payload = {
+      reference: reference,
+      notes: notes,
+    };
+    await axios.post(endpoints.References.postNewReference, payload);
     navigate("/thank-you");
   };
 
@@ -73,14 +79,31 @@ const PropertyReview = () => {
                   </Form.Group>
                 </Col>
               </Row>
-              <Form.Group className="my-2">
-                <Form.Label>Property Type</Form.Label>
-                <Form.Control disabled value={appState.property} />
-              </Form.Group>
-              <Form.Group className="my-2">
-                <Form.Label>Number of Bedroom</Form.Label>
-                <Form.Control disabled value={appState.bedroom} />
-              </Form.Group>
+              <Row>
+                <Col>
+                  <Form.Group className="my-2">
+                    <Form.Label>Property Type</Form.Label>
+                    <Form.Control disabled value={appState.property} />
+                  </Form.Group>
+                </Col>
+                <Col>
+                  <Form.Group className="my-2">
+                    <Form.Label>Number of Bedroom</Form.Label>
+                    <Form.Control disabled value={appState.bedroom} />
+                  </Form.Group>
+                </Col>
+              </Row>
+              <Row>
+                <Form.Group className="my-2">
+                  <Form.Label>Additional Note</Form.Label>
+                  <Form.Control
+                    type="text-area"
+                    value={notes}
+                    onChange={(e) => setNotes(e.target.value)}
+                  />
+                </Form.Group>
+              </Row>
+
               <p className="text-danger my-2" style={{ fontWeight: "bold" }}>
                 *The Service Charge Payment is 1% of your budget
               </p>
