@@ -10,6 +10,7 @@ const initialState = {
   property: "",
   bedroom: 0,
   budget: "0",
+  paymentPlan: "",
   isAuthenticated: false,
   isAdmin: false,
 };

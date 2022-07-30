@@ -1,6 +1,15 @@
 import React, { useState, useContext } from "react";
 import { AppContext } from "../../../context/AppContext";
-import { Tabs, Tab, Form, Row, Col, Button, Container } from "react-bootstrap";
+import {
+  Tabs,
+  Tab,
+  Form,
+  Row,
+  Col,
+  Button,
+  Container,
+  InputGroup,
+} from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { endpoints } from "../../../utils/URL";
@@ -65,6 +74,8 @@ const MenuForm = () => {
   };
 
   const continueRequest = async () => {
+    var budgetInt = parseInt(budget);
+    console.log(budgetInt);
     if (location === "") {
       alert("Please enter a location.");
       return;
@@ -79,6 +90,11 @@ const MenuForm = () => {
     // }
     if (budget === "0") {
       alert("Please enter your budget");
+      return;
+    }
+
+    if (budgetInt >= 20000000) {
+      navigate("/contact-us");
       return;
     }
     const authenticated = appState.isAuthenticated;
@@ -126,11 +142,16 @@ const MenuForm = () => {
             </Col>
             <Col>
               <Form.Label>Budget</Form.Label>
-              <Form.Control
-                type="text"
-                value={budget}
-                onChange={changeBudget}
-              />
+              <InputGroup>
+                <InputGroup.Text>₦</InputGroup.Text>
+                <Form.Control
+                  type="text"
+                  placeholder="Budget"
+                  value={budget}
+                  onChange={changeBudget}
+                />
+                <InputGroup.Text>.00</InputGroup.Text>
+              </InputGroup>
             </Col>
             <Col>
               <Button onClick={continueRequest} className="mt-4" variant="dark">

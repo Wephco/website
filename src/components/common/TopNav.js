@@ -54,7 +54,14 @@ export const TopNav = () => {
             </Nav.Item>
           </Nav>
           {appState.isAuthenticated ? (
-            <div></div>
+            <Nav>
+              <Nav.Item className="mx-2 my-1">
+                {sessionStorage.getItem("name")}
+              </Nav.Item>
+              <Nav.Item className="mx-2 my-1">
+                {sessionStorage.getItem("email")}
+              </Nav.Item>
+            </Nav>
           ) : (
             <Nav className="me-auto">
               <Nav.Item className="mx-2 my-1">
