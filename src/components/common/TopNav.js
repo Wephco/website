@@ -47,7 +47,7 @@ export const TopNav = () => {
                   color: "black",
                   fontWeight: "bold",
                 }}
-                to="/"
+                to="/contact-us"
               >
                 Contact Us
               </Link>

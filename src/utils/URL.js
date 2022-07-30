@@ -16,6 +16,9 @@ let endpoints = {
   References: {
     postNewReference: BASE_URL + "/reference",
   },
+  Contact: {
+    mainURL: BASE_URL + "/contact",
+  },
 };
 
 module.exports = { endpoints, BASE_URL };
