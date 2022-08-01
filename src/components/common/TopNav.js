@@ -23,7 +23,7 @@ export const TopNav = () => {
                   color: "black",
                   fontWeight: "bold",
                 }}
-                to="/"
+                to="/exclusive-offers"
               >
                 Exclusive Offers
               </Link>

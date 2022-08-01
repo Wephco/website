@@ -9,6 +9,7 @@ import PropertyHome from "./components/screens/property/PropertyHome";
 import PropertyReview from "./components/screens/property/PropertyReview";
 import ThankYou from "./components/common/ThankYou";
 import ContactUs from "./components/screens/contact/ContactUs";
+import Landing from "./components/screens/exclusive/Landing";
 
 // Auth
 import Login from "./components/screens/auth/Login";
@@ -31,6 +32,7 @@ function App() {
           <Route path="/real-estate/review" element={<PropertyReview />} />
           <Route path="/thank-you" element={<ThankYou />} />
           <Route path="/contact-us" element={<ContactUs />} />
+          <Route path="/exclusive-offers" element={<Landing />} />
         </Routes>
       </BrowserRouter>
     </AppProvider>
