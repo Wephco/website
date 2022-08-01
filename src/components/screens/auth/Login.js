@@ -37,6 +37,7 @@ const Login = () => {
         sessionStorage.setItem("name", userData.name);
         sessionStorage.setItem("email", userData.user);
         sessionStorage.setItem("phone", userData.phone);
+        sessionStorage.setItem("plan", userData.paymentPlan);
         // await changeState("name", userData.name);
         // await changeState("email", userData.user);
         // await changeState("phone", userData.phone);

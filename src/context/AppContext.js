@@ -11,6 +11,7 @@ const initialState = {
   bedroom: 0,
   budget: "0",
   paymentPlan: "",
+  serviceCharge: 1,
   isAuthenticated: false,
   isAdmin: false,
 };

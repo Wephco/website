@@ -13,12 +13,28 @@ const PropertyReview = () => {
   const navigate = useNavigate();
 
   const [serviceCharge, setServiceCharge] = useState(0);
+  const [paymentPlan, setPaymentPlan] = useState("1%");
 
   const [notes, setNotes] = useState("");
 
   const getServiceCharge = useCallback(async () => {
-    const charge = appState.budget * 0.01;
-    setServiceCharge(charge);
+    var plan = sessionStorage.getItem("plan");
+    if (plan != null) {
+      if (plan === "Basic") {
+        setPaymentPlan("1%");
+        const charge = appState.budget * 0.01;
+        setServiceCharge(charge);
+      }
+      if (plan === "Classic") {
+        setPaymentPlan("2.5%");
+        const charge = appState.budget * 0.025;
+        setServiceCharge(charge);
+      }
+    } else {
+      setPaymentPlan("1%");
+      const charge = appState.budget * 0.01;
+      setServiceCharge(charge);
+    }
   }, [appState.budget]);
 
   // var publicKey =
@@ -110,7 +126,7 @@ const PropertyReview = () => {
               </Row>
 
               <p className="text-danger my-2" style={{ fontWeight: "bold" }}>
-                *The Service Charge Payment is 1% of your budget
+                *The Service Charge Payment is {paymentPlan} of your budget
               </p>
               <Button
                 onClick={() => {
