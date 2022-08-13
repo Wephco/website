@@ -5,7 +5,7 @@ import Footer from "../../common/Footer";
 import { endpoints } from "../../../utils/URL";
 import axios from "axios";
 import { AppContext } from "../../../context/AppContext";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 
 const Login = () => {
   const { changeState } = useContext(AppContext);
@@ -98,6 +98,11 @@ const Login = () => {
                     )}
                   </fieldset>
                 </Form>
+                <div className="register mt-3">
+                  <p>
+                    New User? <Link to="/register">Register Here</Link>
+                  </p>
+                </div>
               </div>
             </Container>
           </Col>

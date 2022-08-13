@@ -38,6 +38,7 @@ export const AppProvider = (props) => {
   const [appState, setAppState] = useState(storedState || initialState);
 
   // function to update state
+  // might change to use Reducers
   const changeState = (state, value) => {
     setAppState({
       ...appState,
