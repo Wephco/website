@@ -1,15 +1,6 @@
 import React, { useState, useContext } from "react";
 import { AppContext } from "../../../context/AppContext";
-import {
-  Tabs,
-  Tab,
-  Form,
-  Row,
-  Col,
-  Button,
-  Container,
-  InputGroup,
-} from "react-bootstrap";
+import { Tabs, Tab, Form, Row, Col, Button, Container } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { endpoints } from "../../../utils/URL";
@@ -23,7 +14,7 @@ const MenuForm = () => {
   const [location, setLocation] = useState("");
   const [property, setProperty] = useState("");
   const [bedroom, setBedroom] = useState(0);
-  const [budget, setBudget] = useState("0");
+  const [budget, setBudget] = useState("");
   const [loading, setLoading] = useState(false);
 
   const changeLocation = async (event) => {
@@ -52,9 +43,9 @@ const MenuForm = () => {
       setLoading(true);
 
       const payload = {
-        name: appState.name,
-        email: appState.email,
-        phone: appState.phone,
+        name: sessionStorage.getItem("name"),
+        email: sessionStorage.getItem("email"),
+        phone: sessionStorage.getItem("phone"),
         location: location,
         property: property,
         bedroom: bedroom,
@@ -74,8 +65,6 @@ const MenuForm = () => {
   };
 
   const continueRequest = async () => {
-    var budgetInt = parseInt(budget);
-    console.log(budgetInt);
     if (location === "") {
       alert("Please enter a location.");
       return;
@@ -88,12 +77,12 @@ const MenuForm = () => {
     //   alert("Please select bedroom size.");
     //   return;
     // }
-    if (budget === "0") {
+    if (budget === "") {
       alert("Please enter your budget");
       return;
     }
 
-    if (budgetInt >= 20000000) {
+    if (budget === "₦20,000,000 and above") {
       navigate("/contact-us");
       return;
     }
@@ -141,17 +130,31 @@ const MenuForm = () => {
               </Form.Select>
             </Col>
             <Col>
-              <Form.Label>Budget</Form.Label>
-              <InputGroup>
-                <InputGroup.Text>₦</InputGroup.Text>
-                <Form.Control
-                  type="text"
-                  placeholder="Budget"
-                  value={budget}
-                  onChange={changeBudget}
-                />
-                <InputGroup.Text>.00</InputGroup.Text>
-              </InputGroup>
+              <Form.Label>Budget Range</Form.Label>
+              <Form.Select value={budget} onChange={changeBudget}>
+                <option value="">-</option>
+                <option value="less than ₦1,000,000">
+                  less than ₦1,000,000
+                </option>
+                <option value="₦1,000,000 - ₦3,000,000">
+                  ₦1,000,000 - ₦3,000,000
+                </option>
+                <option value="₦3,000,000 - ₦5,000,000">
+                  ₦3,000,000 - ₦5,000,000
+                </option>
+                <option value="₦5,000,000 - ₦10,000,000">
+                  ₦5,000,000 - ₦10,000,000
+                </option>
+                <option value="₦10,000,000 - ₦15,000,000">
+                  ₦10,000,000 - ₦15,000,000
+                </option>
+                <option value="₦15,000,000 - ₦19,000,000">
+                  ₦15,000,000 - ₦19,000,000
+                </option>
+                <option value="₦20,000,000 and above">
+                  ₦20,000,000 and above
+                </option>
+              </Form.Select>
             </Col>
             <Col>
               <Button onClick={continueRequest} className="mt-4" variant="dark">

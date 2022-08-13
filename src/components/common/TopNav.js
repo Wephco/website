@@ -49,7 +49,7 @@ export const TopNav = () => {
                 }}
                 to="/contact-us"
               >
-                Contact Us
+                Consult Us
               </Link>
             </Nav.Item>
           </Nav>

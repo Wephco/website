@@ -19,6 +19,8 @@ import Register from "./components/screens/auth/Register";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
 
+// TODO: Change alerts to toast notifications.
+
 function App() {
   return (
     <AppProvider>

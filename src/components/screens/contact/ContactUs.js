@@ -12,6 +12,7 @@ const ContactUs = () => {
   const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
+  const [contactMethod, setContactMethod] = useState("");
 
   const [loading, setLoading] = useState(false);
 
@@ -35,6 +36,8 @@ const ContactUs = () => {
         phone: phone,
         email: email,
         message: message,
+        contactMethod: contactMethod,
+        subject: "Real Estate",
       };
 
       await axios.post(endpoints.Contact.mainURL, payload);
@@ -100,6 +103,24 @@ const ContactUs = () => {
                     as="textarea"
                     value={message}
                     onChange={(e) => setMessage(e.target.value)}
+                  />
+                </Form.Group>
+
+                <Form.Group className="my-2">
+                  <Form.Label>Contact Method</Form.Label>
+                  <Form.Check
+                    type="radio"
+                    label="Book a Meeting"
+                    name="contact"
+                    id="Book a Meeting"
+                    onClick={(e) => setContactMethod(e.target.id)}
+                  />
+                  <Form.Check
+                    type="radio"
+                    label="Request a call"
+                    name="contact"
+                    id="Request a call"
+                    onClick={(e) => setContactMethod(e.target.id)}
                   />
                 </Form.Group>
               </fieldset>
