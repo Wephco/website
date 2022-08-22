@@ -53,7 +53,7 @@ export const TopNav = () => {
               </Link>
             </Nav.Item>
           </Nav>
-          {appState.isAuthenticated ? (
+          {/* {appState.isAuthenticated ? (
             <Nav>
               <Nav.Item className="mx-2 my-1">
                 {sessionStorage.getItem("name")}
@@ -75,7 +75,7 @@ export const TopNav = () => {
                 </Link>
               </Nav.Item>
             </Nav>
-          )}
+          )} */}
         </Navbar.Collapse>
       </Container>
     </Navbar>

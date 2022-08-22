@@ -86,13 +86,14 @@ const MenuForm = () => {
       navigate("/contact-us");
       return;
     }
-    const authenticated = appState.isAuthenticated;
-    if (!authenticated) {
-      navigate("/login");
-    } else {
-      // make API call to send details to database
-      await sendDetails();
-    }
+    // const authenticated = appState.isAuthenticated;
+    // if (!authenticated) {
+    //   navigate("/login");
+    // } else {
+    //   // make API call to send details to database
+    //   await sendDetails();
+    // }
+    await sendDetails();
   };
 
   return (
@@ -157,9 +158,21 @@ const MenuForm = () => {
               </Form.Select>
             </Col>
             <Col>
-              <Button onClick={continueRequest} className="mt-4" variant="dark">
-                Continue
-              </Button>
+              {loading ? (
+                <div class="spinner-border text-dark" role="status">
+                  <span class="visually-hidden">Loading...</span>
+                </div>
+              ) : (
+                <div className="d-grid gap-2 col-12">
+                  <Button
+                    onClick={continueRequest}
+                    className="mt-4"
+                    variant="dark"
+                  >
+                    Continue
+                  </Button>
+                </div>
+              )}
             </Col>
           </Row>
         </fieldset>
