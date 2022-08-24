@@ -2,12 +2,12 @@ import React, { useState, useContext } from "react";
 import { AppContext } from "../../../context/AppContext";
 import { Tabs, Tab, Form, Row, Col, Button, Container } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
-import { endpoints } from "../../../utils/URL";
-import { formatNumber } from "../../../utils/formatNumber";
+// import axios from "axios";
+// import { endpoints } from "../../../utils/URL";
+// import { formatNumber } from "../../../utils/formatNumber";
 
 const MenuForm = () => {
-  const { appState, changeState } = useContext(AppContext);
+  const { changeState } = useContext(AppContext);
 
   const navigate = useNavigate();
 
@@ -42,17 +42,17 @@ const MenuForm = () => {
     try {
       setLoading(true);
 
-      const payload = {
-        name: sessionStorage.getItem("name"),
-        email: sessionStorage.getItem("email"),
-        phone: sessionStorage.getItem("phone"),
-        location: location,
-        property: property,
-        bedroom: bedroom,
-        budget: formatNumber(parseFloat(budget)),
-      };
+      // const payload = {
+      //   name: sessionStorage.getItem("name"),
+      //   email: sessionStorage.getItem("email"),
+      //   phone: sessionStorage.getItem("phone"),
+      //   location: location,
+      //   property: property,
+      //   bedroom: bedroom,
+      //   budget: formatNumber(parseFloat(budget)),
+      // };
 
-      await axios.post(endpoints.RealEstateRequests.postNewRequest, payload);
+      // await axios.post(endpoints.RealEstateRequests.postNewRequest, payload);
 
       navigate("/real-estate/review");
     } catch (error) {
