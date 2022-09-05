@@ -12,30 +12,22 @@ const PropertyReview = () => {
 
   const navigate = useNavigate();
 
-  const [serviceCharge, setServiceCharge] = useState(0);
-  const [paymentPlan, setPaymentPlan] = useState("2%");
+  const [amountToPay, setAmountToPay] = useState(
+    appState.serviceCharge * appState.maxBudget
+  );
+  const [paymentPlan, setPaymentPlan] = useState("Wephco Basic");
+  const [serviceCharge, setServiceCharge] = useState(appState.serviceCharge);
 
   const [notes, setNotes] = useState("");
 
-  const getServiceCharge = useCallback(async () => {
-    var plan = sessionStorage.getItem("plan") ?? paymentPlan;
-    if (plan != null) {
-      if (plan === "Basic") {
-        setPaymentPlan("2%");
-        const charge = appState.budget * 0.02;
-        setServiceCharge(charge);
-      }
-      if (plan === "Classic") {
-        setPaymentPlan("5%");
-        const charge = appState.budget * 0.05;
-        setServiceCharge(charge);
-      }
+  const updateServiceCharge = useCallback(() => {
+    if (paymentPlan === "Wephco Basic") {
+      setServiceCharge(0.02);
     } else {
-      setPaymentPlan("2%");
-      const charge = appState.budget * 0.01;
-      setServiceCharge(charge);
+      setServiceCharge(0.05);
     }
-  }, [appState.budget, paymentPlan]);
+    setAmountToPay(serviceCharge * appState.maxBudget);
+  }, [paymentPlan, serviceCharge, appState.maxBudget]);
 
   // var publicKey =
   //   process.env.NODE_ENV === "development"
@@ -45,7 +37,7 @@ const PropertyReview = () => {
   const config = {
     reference: new Date().getTime().toString(),
     email: sessionStorage.getItem("email"),
-    amount: serviceCharge * 100,
+    amount: amountToPay * 100,
     // public key not picked roperly from .env file. leaving here for now.
     publicKey: "pk_live_901de7c33d05fe01fbdd46cf921da1bd3de22431",
   };
@@ -70,8 +62,8 @@ const PropertyReview = () => {
   };
 
   useEffect(() => {
-    getServiceCharge();
-  }, [getServiceCharge]);
+    updateServiceCharge();
+  }, [updateServiceCharge]);
 
   const initializePayment = usePaystackPayment(config);
 
@@ -128,7 +120,7 @@ const PropertyReview = () => {
               </Row>
 
               <p className="text-danger my-2" style={{ fontWeight: "bold" }}>
-                *The Service Charge Payment is {paymentPlan} of your budget
+                *The Service Charge Payment is a percentage of your budget
               </p>
 
               <Form.Group className="mb-5">
@@ -136,10 +128,10 @@ const PropertyReview = () => {
                 <Row>
                   <Col className="my-2" sm={12} md={6}>
                     <Card
-                      bg={paymentPlan === "Basic" ? "info" : ""}
-                      text={paymentPlan === "Basic" ? "white" : "dark"}
+                      bg={paymentPlan === "Wephco Basic" ? "dark" : ""}
+                      text={paymentPlan === "Wephco Basic" ? "white" : "dark"}
                       className="text-center"
-                      onClick={() => setPaymentPlan("Basic")}
+                      onClick={() => setPaymentPlan("Wephco Basic")}
                     >
                       <Card.Header>
                         Wephco Basic{" "}
@@ -166,10 +158,10 @@ const PropertyReview = () => {
                   </Col>
                   <Col className="my-2" sm={12} md={6}>
                     <Card
-                      bg={paymentPlan === "Classic" ? "info" : ""}
-                      text={paymentPlan === "Classic" ? "white" : "dark"}
+                      bg={paymentPlan === "Wephco Classic" ? "dark" : ""}
+                      text={paymentPlan === "Wephco Classic" ? "white" : "dark"}
                       className="text-center"
-                      onClick={() => setPaymentPlan("Classic")}
+                      onClick={() => setPaymentPlan("Wephco Classic")}
                     >
                       <Card.Header>
                         Wephco Classic{" "}
@@ -214,7 +206,7 @@ const PropertyReview = () => {
                 className="m-2"
                 variant="dark"
               >
-                Proceed to pay ₦{formatNumber(serviceCharge)}
+                Proceed to pay ₦{formatNumber(amountToPay)}
               </Button>
             </Form>
           </div>

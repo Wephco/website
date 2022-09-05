@@ -35,6 +35,7 @@ const MenuForm = () => {
 
   const changeBudget = async (event) => {
     changeState("budget", event.target.value);
+    changeState("maxBudget", parseInt(event.target.id));
     setBudget(event.target.value);
   };
 
@@ -43,19 +44,23 @@ const MenuForm = () => {
       setLoading(true);
 
       // const payload = {
-      //   name: sessionStorage.getItem("name"),
-      //   email: sessionStorage.getItem("email"),
-      //   phone: sessionStorage.getItem("phone"),
+      //   // name: sessionStorage.getItem("name"),
+      //   // email: sessionStorage.getItem("email"),
+      //   // phone: sessionStorage.getItem("phone"),
+      //   name: "mike",
+      //   email: "mike@mike.com",
+      //   phone: "092083093",
       //   location: location,
       //   property: property,
       //   bedroom: bedroom,
-      //   budget: formatNumber(parseFloat(budget)),
+      //   budget: budget,
       // };
 
       // await axios.post(endpoints.RealEstateRequests.postNewRequest, payload);
 
       navigate("/real-estate/review");
     } catch (error) {
+      console.log(error);
       alert(
         "We're experiencing some downtime at the moment. Please try again later"
       );
@@ -134,22 +139,22 @@ const MenuForm = () => {
               <Form.Label>Budget Range</Form.Label>
               <Form.Select value={budget} onChange={changeBudget}>
                 <option value="">-</option>
-                <option value="less than ₦1,000,000">
+                <option id="1000000" value="less than ₦1,000,000">
                   less than ₦1,000,000
                 </option>
-                <option value="₦1,000,000 - ₦3,000,000">
+                <option id="3000000" value="₦1,000,000 - ₦3,000,000">
                   ₦1,000,000 - ₦3,000,000
                 </option>
-                <option value="₦3,000,000 - ₦5,000,000">
+                <option id="5000000" value="₦3,000,000 - ₦5,000,000">
                   ₦3,000,000 - ₦5,000,000
                 </option>
-                <option value="₦5,000,000 - ₦10,000,000">
+                <option id="10000000" value="₦5,000,000 - ₦10,000,000">
                   ₦5,000,000 - ₦10,000,000
                 </option>
-                <option value="₦10,000,000 - ₦15,000,000">
+                <option id="15000000" value="₦10,000,000 - ₦15,000,000">
                   ₦10,000,000 - ₦15,000,000
                 </option>
-                <option value="₦15,000,000 - ₦19,000,000">
+                <option id="19000000" value="₦15,000,000 - ₦19,000,000">
                   ₦15,000,000 - ₦19,000,000
                 </option>
                 <option value="₦20,000,000 and above">

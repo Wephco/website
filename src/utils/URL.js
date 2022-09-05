@@ -1,6 +1,8 @@
+// Deprecated. Moving to firebase.
+
 // let BASE_URL = process.env.REACT_APP_BASE_URL;
-// let BASE_URL = "https://wephco-api.azurewebsites.net/api";
-let BASE_URL = "https://wephco-staging-api.herokuapp.com/api";
+let BASE_URL = "https://wephco-api.azurewebsites.net/api";
+// let BASE_URL = "https://wephco-staging-api.herokuapp.com/api";
 
 let endpoints = {
   Auth: {
