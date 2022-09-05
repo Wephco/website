@@ -6,7 +6,7 @@ import { usePaystackPayment } from "react-paystack";
 // import axios from "axios";
 // import { endpoints } from "../../../utils/URL";
 import { useNavigate } from "react-router-dom";
-import UserDatailsModal from "./UserDatailsModal";
+import UserDetailsModal from "./UserDetailsModal";
 
 const PropertyReview = () => {
   const { appState } = useContext(AppContext);
@@ -65,7 +65,7 @@ const PropertyReview = () => {
   }, [serviceCharge, budget]);
 
   let userDetails = (
-    <UserDatailsModal open={showModal} close={() => setShowModal(false)} />
+    <UserDetailsModal open={showModal} close={() => setShowModal(false)} />
   );
 
   return (

@@ -1,7 +1,7 @@
 import React from "react";
 import { Modal } from "react-bootstrap";
 
-const UserDatailsModal = ({ open, close }) => {
+const UserDetailsModal = ({ open, close }) => {
   const saveDetails = (input) => (event) => {
     sessionStorage.setItem(input.toString(), event.target.value);
   };
@@ -29,4 +29,4 @@ const UserDatailsModal = ({ open, close }) => {
   );
 };
 
-export default UserDatailsModal;
+export default UserDetailsModal;
