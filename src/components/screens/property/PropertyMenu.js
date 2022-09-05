@@ -19,7 +19,6 @@ const MenuForm = () => {
 
   const changeLocation = async (event) => {
     changeState("location", event.target.value);
-
     setLocation(event.target.value);
   };
 
@@ -34,29 +33,27 @@ const MenuForm = () => {
   };
 
   const changeBudget = async (event) => {
-    changeState("budget", event.target.value);
-    changeState("maxBudget", parseInt(event.target.id));
+    const chosenBudget = event.target.selectedOptions[0].getAttribute("budget");
     setBudget(event.target.value);
+    sessionStorage.setItem("budget", event.target.value);
+    // await changeState("budget", event.target.value);
+    await changeState("maxBudget", chosenBudget);
   };
+
+  // const setValues = async () => {
+
+  //   await changeState("bedroom", bedroom);
+  //   await changeState("property", property);
+  //   await changeState("location", location);
+  // };
 
   const sendDetails = async () => {
     try {
       setLoading(true);
 
-      // const payload = {
-      //   // name: sessionStorage.getItem("name"),
-      //   // email: sessionStorage.getItem("email"),
-      //   // phone: sessionStorage.getItem("phone"),
-      //   name: "mike",
-      //   email: "mike@mike.com",
-      //   phone: "092083093",
-      //   location: location,
-      //   property: property,
-      //   bedroom: bedroom,
-      //   budget: budget,
-      // };
+      // await setValues();
 
-      // await axios.post(endpoints.RealEstateRequests.postNewRequest, payload);
+      // save to firebase
 
       navigate("/real-estate/review");
     } catch (error) {
@@ -138,34 +135,60 @@ const MenuForm = () => {
             <Col>
               <Form.Label>Budget Range</Form.Label>
               <Form.Select value={budget} onChange={changeBudget}>
-                <option value="">-</option>
-                <option id="1000000" value="less than ₦1,000,000">
+                <option budget={0} value="">
+                  -
+                </option>
+                <option
+                  budget={1000000}
+                  id="1000000"
+                  value="less than ₦1,000,000"
+                >
                   less than ₦1,000,000
                 </option>
-                <option id="3000000" value="₦1,000,000 - ₦3,000,000">
+                <option
+                  budget={3000000}
+                  id="3000000"
+                  value="₦1,000,000 - ₦3,000,000"
+                >
                   ₦1,000,000 - ₦3,000,000
                 </option>
-                <option id="5000000" value="₦3,000,000 - ₦5,000,000">
+                <option
+                  budget={5000000}
+                  id="5000000"
+                  value="₦3,000,000 - ₦5,000,000"
+                >
                   ₦3,000,000 - ₦5,000,000
                 </option>
-                <option id="10000000" value="₦5,000,000 - ₦10,000,000">
+                <option
+                  budget={10000000}
+                  id="10000000"
+                  value="₦5,000,000 - ₦10,000,000"
+                >
                   ₦5,000,000 - ₦10,000,000
                 </option>
-                <option id="15000000" value="₦10,000,000 - ₦15,000,000">
+                <option
+                  budget={15000000}
+                  id="15000000"
+                  value="₦10,000,000 - ₦15,000,000"
+                >
                   ₦10,000,000 - ₦15,000,000
                 </option>
-                <option id="19000000" value="₦15,000,000 - ₦19,000,000">
+                <option
+                  budget={19000000}
+                  id="19000000"
+                  value="₦15,000,000 - ₦19,000,000"
+                >
                   ₦15,000,000 - ₦19,000,000
                 </option>
-                <option value="₦20,000,000 and above">
+                <option budget={20000000} value="₦20,000,000 and above">
                   ₦20,000,000 and above
                 </option>
               </Form.Select>
             </Col>
             <Col>
               {loading ? (
-                <div class="spinner-border text-dark" role="status">
-                  <span class="visually-hidden">Loading...</span>
+                <div className="spinner-border text-dark" role="status">
+                  <span className="visually-hidden">Loading...</span>
                 </div>
               ) : (
                 <div className="d-grid gap-2 col-12">

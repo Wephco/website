@@ -1,33 +1,36 @@
-import React, { useState, useEffect, useContext, useCallback } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { Container, Form, Row, Button, Col, Card } from "react-bootstrap";
 import { AppContext } from "../../../context/AppContext";
 import { formatNumber } from "../../../utils/formatNumber";
 import { usePaystackPayment } from "react-paystack";
-import axios from "axios";
-import { endpoints } from "../../../utils/URL";
+// import axios from "axios";
+// import { endpoints } from "../../../utils/URL";
 import { useNavigate } from "react-router-dom";
+import UserDatailsModal from "./UserDatailsModal";
 
 const PropertyReview = () => {
   const { appState } = useContext(AppContext);
 
   const navigate = useNavigate();
 
-  const [amountToPay, setAmountToPay] = useState(
-    appState.serviceCharge * appState.maxBudget
-  );
+  const [budget] = useState(appState.maxBudget);
   const [paymentPlan, setPaymentPlan] = useState("Wephco Basic");
   const [serviceCharge, setServiceCharge] = useState(appState.serviceCharge);
+  const [amount, setAmount] = useState(0);
+
+  const [showModal, setShowModal] = useState(false);
 
   const [notes, setNotes] = useState("");
 
-  const updateServiceCharge = useCallback(() => {
-    if (paymentPlan === "Wephco Basic") {
+  const updateServiceCharge = (plan) => {
+    if (plan === "Basic") {
       setServiceCharge(0.02);
+      setPaymentPlan("Wephco Basic");
     } else {
       setServiceCharge(0.05);
+      setPaymentPlan("Wephco Classic");
     }
-    setAmountToPay(serviceCharge * appState.maxBudget);
-  }, [paymentPlan, serviceCharge, appState.maxBudget]);
+  };
 
   // var publicKey =
   //   process.env.NODE_ENV === "development"
@@ -37,38 +40,37 @@ const PropertyReview = () => {
   const config = {
     reference: new Date().getTime().toString(),
     email: sessionStorage.getItem("email"),
-    amount: amountToPay * 100,
+    amount: amount * 100,
+    metadata: {
+      name: sessionStorage.getItem("name"),
+      phone: sessionStorage.getItem("phone"),
+    },
     // public key not picked roperly from .env file. leaving here for now.
     publicKey: "pk_live_901de7c33d05fe01fbdd46cf921da1bd3de22431",
   };
 
-  const onSuccess = async (reference) => {
-    //make API call to store paystack reference details
-    const payload = {
-      reference: reference,
-      notes: notes,
-    };
-    const response = await axios.post(
-      endpoints.References.postNewReference,
-      payload
-    );
-    if (response.status === 200) {
-      navigate("/thank-you");
-    }
+  const onSuccess = (reference) => {
+    console.log(reference);
+    navigate("/thank-you");
   };
 
   const onClose = () => {
     console.log("Payment Closed");
   };
 
-  useEffect(() => {
-    updateServiceCharge();
-  }, [updateServiceCharge]);
-
   const initializePayment = usePaystackPayment(config);
+
+  useEffect(() => {
+    setAmount(serviceCharge * budget);
+  }, [serviceCharge, budget]);
+
+  let userDetails = (
+    <UserDatailsModal open={showModal} close={() => setShowModal(false)} />
+  );
 
   return (
     <div>
+      {userDetails}
       <Container>
         <h3 className="text-center" style={{ marginTop: "50px" }}>
           Your Selection Details
@@ -88,8 +90,7 @@ const PropertyReview = () => {
                     <Form.Label>Budget</Form.Label>
                     <Form.Control
                       disabled
-                      // value={`₦${formatNumber(appState.budget)}`}
-                      value={appState.budget}
+                      value={sessionStorage.getItem("budget")}
                     />
                   </Form.Group>
                 </Col>
@@ -131,7 +132,7 @@ const PropertyReview = () => {
                       bg={paymentPlan === "Wephco Basic" ? "dark" : ""}
                       text={paymentPlan === "Wephco Basic" ? "white" : "dark"}
                       className="text-center"
-                      onClick={() => setPaymentPlan("Wephco Basic")}
+                      onClick={() => updateServiceCharge("Basic")}
                     >
                       <Card.Header>
                         Wephco Basic{" "}
@@ -141,9 +142,9 @@ const PropertyReview = () => {
                         ></i>
                       </Card.Header>
                       <Card.Body>
-                        <Card.Text>
-                          <ul>
-                            <li clasName="lead">2% Service Charge</li>
+                        <div>
+                          <ul className="lead">
+                            <li>2% Service Charge</li>
                             <li>Maximum of 7 Properties</li>
                             <li>
                               You will be linked with the agent in-charge of the
@@ -152,7 +153,7 @@ const PropertyReview = () => {
                             <li>Inspection fees would be paid</li>
                             <li>We won't be present during inspections</li>
                           </ul>
-                        </Card.Text>
+                        </div>
                       </Card.Body>
                     </Card>
                   </Col>
@@ -161,7 +162,7 @@ const PropertyReview = () => {
                       bg={paymentPlan === "Wephco Classic" ? "dark" : ""}
                       text={paymentPlan === "Wephco Classic" ? "white" : "dark"}
                       className="text-center"
-                      onClick={() => setPaymentPlan("Wephco Classic")}
+                      onClick={() => updateServiceCharge("Classic")}
                     >
                       <Card.Header>
                         Wephco Classic{" "}
@@ -179,8 +180,8 @@ const PropertyReview = () => {
                         ></i>
                       </Card.Header>
                       <Card.Body>
-                        <Card.Text>
-                          <ul>
+                        <div>
+                          <ul className="lead">
                             <li>5% Service Charge</li>
                             <li>Maximum of 15 Properties</li>
                             <li>
@@ -192,7 +193,7 @@ const PropertyReview = () => {
                               A Wephco rep will be present during inspections
                             </li>
                           </ul>
-                        </Card.Text>
+                        </div>
                       </Card.Body>
                     </Card>
                   </Col>
@@ -201,12 +202,17 @@ const PropertyReview = () => {
 
               <Button
                 onClick={() => {
-                  initializePayment(onSuccess, onClose);
+                  const email = sessionStorage.getItem("email");
+                  if (email === "" || email === null) {
+                    setShowModal(true);
+                  } else {
+                    initializePayment(onSuccess, onClose);
+                  }
                 }}
                 className="m-2"
                 variant="dark"
               >
-                Proceed to pay ₦{formatNumber(amountToPay)}
+                Proceed to pay ₦{formatNumber(amount)}
               </Button>
             </Form>
           </div>
