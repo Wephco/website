@@ -9,9 +9,10 @@ const initialState = {
   location: "",
   property: "",
   bedroom: 0,
-  budget: "0",
+  budget: "",
+  maxBudget: 0.0,
   paymentPlan: "",
-  serviceCharge: 1,
+  serviceCharge: 0.02,
   isAuthenticated: false,
   isAdmin: false,
 };
