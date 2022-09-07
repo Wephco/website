@@ -126,8 +126,8 @@ const ContactUs = () => {
               </fieldset>
             </Form>
             {loading ? (
-              <div class="spinner-border text-dark mb-5" role="status">
-                <span class="visually-hidden">Loading...</span>
+              <div className="spinner-border text-dark mb-5" role="status">
+                <span className="visually-hidden">Loading...</span>
               </div>
             ) : (
               <div className="d-grid gap-2 col-12 mt-3 mb-5">

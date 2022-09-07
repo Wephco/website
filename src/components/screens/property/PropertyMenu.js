@@ -2,12 +2,12 @@ import React, { useState, useContext } from "react";
 import { AppContext } from "../../../context/AppContext";
 import { Tabs, Tab, Form, Row, Col, Button, Container } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
-import { endpoints } from "../../../utils/URL";
-import { formatNumber } from "../../../utils/formatNumber";
+// import axios from "axios";
+// import { endpoints } from "../../../utils/URL";
+// import { formatNumber } from "../../../utils/formatNumber";
 
 const MenuForm = () => {
-  const { appState, changeState } = useContext(AppContext);
+  const { changeState } = useContext(AppContext);
 
   const navigate = useNavigate();
 
@@ -19,7 +19,6 @@ const MenuForm = () => {
 
   const changeLocation = async (event) => {
     changeState("location", event.target.value);
-
     setLocation(event.target.value);
   };
 
@@ -34,28 +33,31 @@ const MenuForm = () => {
   };
 
   const changeBudget = async (event) => {
-    changeState("budget", event.target.value);
+    const chosenBudget = event.target.selectedOptions[0].getAttribute("budget");
     setBudget(event.target.value);
+    sessionStorage.setItem("budget", event.target.value);
+    // await changeState("budget", event.target.value);
+    await changeState("maxBudget", chosenBudget);
   };
+
+  // const setValues = async () => {
+
+  //   await changeState("bedroom", bedroom);
+  //   await changeState("property", property);
+  //   await changeState("location", location);
+  // };
 
   const sendDetails = async () => {
     try {
       setLoading(true);
 
-      const payload = {
-        name: sessionStorage.getItem("name"),
-        email: sessionStorage.getItem("email"),
-        phone: sessionStorage.getItem("phone"),
-        location: location,
-        property: property,
-        bedroom: bedroom,
-        budget: formatNumber(parseFloat(budget)),
-      };
+      // await setValues();
 
-      await axios.post(endpoints.RealEstateRequests.postNewRequest, payload);
+      // save to firebase
 
       navigate("/real-estate/review");
     } catch (error) {
+      console.log(error);
       alert(
         "We're experiencing some downtime at the moment. Please try again later"
       );
@@ -86,13 +88,14 @@ const MenuForm = () => {
       navigate("/contact-us");
       return;
     }
-    const authenticated = appState.isAuthenticated;
-    if (!authenticated) {
-      navigate("/login");
-    } else {
-      // make API call to send details to database
-      await sendDetails();
-    }
+    // const authenticated = appState.isAuthenticated;
+    // if (!authenticated) {
+    //   navigate("/login");
+    // } else {
+    //   // make API call to send details to database
+    //   await sendDetails();
+    // }
+    await sendDetails();
   };
 
   return (
@@ -132,34 +135,72 @@ const MenuForm = () => {
             <Col>
               <Form.Label>Budget Range</Form.Label>
               <Form.Select value={budget} onChange={changeBudget}>
-                <option value="">-</option>
-                <option value="less than ₦1,000,000">
+                <option budget={0} value="">
+                  -
+                </option>
+                <option
+                  budget={1000000}
+                  id="1000000"
+                  value="less than ₦1,000,000"
+                >
                   less than ₦1,000,000
                 </option>
-                <option value="₦1,000,000 - ₦3,000,000">
+                <option
+                  budget={3000000}
+                  id="3000000"
+                  value="₦1,000,000 - ₦3,000,000"
+                >
                   ₦1,000,000 - ₦3,000,000
                 </option>
-                <option value="₦3,000,000 - ₦5,000,000">
+                <option
+                  budget={5000000}
+                  id="5000000"
+                  value="₦3,000,000 - ₦5,000,000"
+                >
                   ₦3,000,000 - ₦5,000,000
                 </option>
-                <option value="₦5,000,000 - ₦10,000,000">
+                <option
+                  budget={10000000}
+                  id="10000000"
+                  value="₦5,000,000 - ₦10,000,000"
+                >
                   ₦5,000,000 - ₦10,000,000
                 </option>
-                <option value="₦10,000,000 - ₦15,000,000">
+                <option
+                  budget={15000000}
+                  id="15000000"
+                  value="₦10,000,000 - ₦15,000,000"
+                >
                   ₦10,000,000 - ₦15,000,000
                 </option>
-                <option value="₦15,000,000 - ₦19,000,000">
+                <option
+                  budget={19000000}
+                  id="19000000"
+                  value="₦15,000,000 - ₦19,000,000"
+                >
                   ₦15,000,000 - ₦19,000,000
                 </option>
-                <option value="₦20,000,000 and above">
+                <option budget={20000000} value="₦20,000,000 and above">
                   ₦20,000,000 and above
                 </option>
               </Form.Select>
             </Col>
             <Col>
-              <Button onClick={continueRequest} className="mt-4" variant="dark">
-                Continue
-              </Button>
+              {loading ? (
+                <div className="spinner-border text-dark" role="status">
+                  <span className="visually-hidden">Loading...</span>
+                </div>
+              ) : (
+                <div className="d-grid gap-2 col-12">
+                  <Button
+                    onClick={continueRequest}
+                    className="mt-4"
+                    variant="dark"
+                  >
+                    Continue
+                  </Button>
+                </div>
+              )}
             </Col>
           </Row>
         </fieldset>

@@ -4,7 +4,7 @@ import logo from "../../images/wephcoW.png";
 
 const Footer = () => {
   return (
-    <nav className="navbar fixed-bottom bg-light">
+    <nav className="navbar bg-light">
       <div className="container-fluid">
         <Link className="navbar-brand m-2" to="/">
           <img src={logo} alt="logo" />
