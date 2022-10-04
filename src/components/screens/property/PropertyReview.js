@@ -24,10 +24,10 @@ const PropertyReview = () => {
 
   const updateServiceCharge = (plan) => {
     if (plan === "Basic") {
-      setServiceCharge(0.02);
+      setServiceCharge(0.01);
       setPaymentPlan("Wephco Basic");
     } else {
-      setServiceCharge(0.05);
+      setServiceCharge(0.04);
       setPaymentPlan("Wephco Classic");
     }
   };
