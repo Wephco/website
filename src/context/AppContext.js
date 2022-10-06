@@ -1,4 +1,4 @@
-import React, { useState, createContext, useEffect } from "react";
+import React, { useState, createContext } from "react";
 
 // initial app states
 const initialState = {
@@ -12,48 +12,34 @@ const initialState = {
   budget: "",
   maxBudget: 0.0,
   paymentPlan: "",
-  serviceCharge: 0.02,
+  serviceCharge: 0.01,
   isAuthenticated: false,
   isAdmin: false,
 };
 
 // create context
-export const AppContext = createContext(initialState);
+export const AppContext = createContext();
 
 // load saved state from session storage
-const loadState = () => {
-  try {
-    const serializedState = sessionStorage.getItem("state");
-    if (serializedState === null) {
-      return undefined;
-    }
-    return JSON.parse(serializedState);
-  } catch (error) {
-    return undefined;
-  }
-};
+// const loadState = () => {
+//   try {
+//     const serializedState = sessionStorage.getItem("state");
+//     if (serializedState === null) {
+//       return undefined;
+//     }
+//     return JSON.parse(serializedState);
+//   } catch (error) {
+//     return undefined;
+//   }
+// };
 
-const storedState = loadState();
+// const storedState = loadState();
 
 export const AppProvider = (props) => {
-  const [appState, setAppState] = useState(storedState || initialState);
-
-  // function to update state
-  // might change to use Reducers
-  const changeState = (state, value) => {
-    setAppState({
-      ...appState,
-      [state]: value,
-    });
-  };
-
-  // save state to session when there's a change
-  useEffect(() => {
-    sessionStorage.setItem("state", JSON.stringify(appState));
-  }, [appState]);
+  const [appState, setAppState] = useState(initialState);
 
   return (
-    <AppContext.Provider value={{ appState, changeState }}>
+    <AppContext.Provider value={{ appState, setAppState }}>
       {props.children}
     </AppContext.Provider>
   );
