@@ -72,9 +72,18 @@ const PropertyReview = () => {
     <div>
       {userDetails}
       <Container>
-        <h3 className="text-center" style={{ marginTop: "50px" }}>
-          Your Selection Details
-        </h3>
+        <div className="text-center" style={{ marginTop: "50px" }}>
+          <Row>
+            <Col>
+              <i onClick={() => navigate(-1)} className="bi bi-arrow-left">Back</i>
+            </Col>
+            <Col>
+              <h3 className="">Your Selection Details</h3>
+            </Col>
+            <Col></Col>
+          </Row>
+        </div>
+
         <div className="row d-flex justify-content-center align-items-center">
           <div className="col-md-7 col-sm-7 mt-5">
             <Form>
@@ -90,7 +99,7 @@ const PropertyReview = () => {
                     <Form.Label>Budget</Form.Label>
                     <Form.Control
                       disabled
-                      value={sessionStorage.getItem("budget")}
+                      value={`₦${formatNumber(parseInt(appState.maxBudget))}`}
                     />
                   </Form.Group>
                 </Col>
