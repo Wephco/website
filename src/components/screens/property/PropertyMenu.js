@@ -7,7 +7,7 @@ import { useNavigate } from "react-router-dom";
 // import { formatNumber } from "../../../utils/formatNumber";
 
 const MenuForm = () => {
-  const { changeState } = useContext(AppContext);
+  const { appState, setAppState } = useContext(AppContext);
 
   const navigate = useNavigate();
 
@@ -18,26 +18,40 @@ const MenuForm = () => {
   const [loading, setLoading] = useState(false);
 
   const changeLocation = async (event) => {
-    changeState("location", event.target.value);
+    setAppState({
+      ...appState,
+      location: event.target.value,
+    });
     setLocation(event.target.value);
   };
 
   const selectProperty = async (event) => {
-    changeState("property", event.target.value);
+    setAppState({
+      ...appState,
+      property: event.target.value,
+    });
     setProperty(event.target.value);
   };
 
   const selectBedroom = async (event) => {
-    changeState("bedroom", event.target.value);
+    setAppState({
+      ...appState,
+      bedroom: event.target.value,
+    });
     setBedroom(event.target.value);
   };
 
   const changeBudget = async (event) => {
     const chosenBudget = event.target.selectedOptions[0].getAttribute("budget");
     setBudget(event.target.value);
-    sessionStorage.setItem("budget", event.target.value);
-    // await changeState("budget", event.target.value);
-    await changeState("maxBudget", chosenBudget);
+    setAppState({
+      ...appState,
+      budget: event.target.value,
+      maxBudget: chosenBudget,
+    });
+    // sessionStorage.setItem("budget", event.target.value);
+    // // await changeState("budget", event.target.value);
+    // await changeState("maxBudget", chosenBudget);
   };
 
   // const setValues = async () => {
