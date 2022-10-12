@@ -39,11 +39,11 @@ const PropertyReview = () => {
 
   const config = {
     reference: new Date().getTime().toString(),
-    email: sessionStorage.getItem("email"),
+    email: appState.email,
     amount: amount * 100,
     metadata: {
-      name: sessionStorage.getItem("name"),
-      phone: sessionStorage.getItem("phone"),
+      name: appState.name,
+      phone: appState.phone
     },
     // public key not picked roperly from .env file. leaving here for now.
     publicKey: "pk_live_901de7c33d05fe01fbdd46cf921da1bd3de22431",
@@ -211,7 +211,7 @@ const PropertyReview = () => {
 
               <Button
                 onClick={() => {
-                  const email = sessionStorage.getItem("email");
+                  const email = appState.email
                   if (email === "" || email === null) {
                     setShowModal(true);
                   } else {

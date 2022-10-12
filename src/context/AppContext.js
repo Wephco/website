@@ -15,6 +15,7 @@ const initialState = {
   serviceCharge: 0.01,
   isAuthenticated: false,
   isAdmin: false,
+  imageUrl: ''
 };
 
 // create context

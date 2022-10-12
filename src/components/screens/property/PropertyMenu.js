@@ -11,7 +11,7 @@ const MenuForm = () => {
 
   const navigate = useNavigate();
 
-  const [loading, setLoading] = useState(false);
+  const [loading] = useState(false);
 
   const changeLocation = async (event) => {
     setAppState({
@@ -48,25 +48,6 @@ const MenuForm = () => {
     
   };
 
-  const sendDetails = async () => {
-    try {
-      setLoading(true);
-
-      // await setValues();
-
-      // save to firebase
-      jasmine;
-
-      navigate("/real-estate/review");
-    } catch (error) {
-      alert(
-        "We're experiencing some downtime at the moment. Please try again later"
-      );
-    } finally {
-      setLoading(false);
-    }
-  };
-
   const continueRequest = async () => {
     if (appState.location === "") {
       alert("Please enter a location.");
@@ -94,14 +75,14 @@ const MenuForm = () => {
       navigate("/login");
     } else {
       // make API call to send details to database
-      await sendDetails();
+      navigate("/real-estate/review");
     }
   };
 
   return (
     <div>
       <Form>
-        <fieldset disabled={loading}>
+        <fieldset>
           <Row>
             <Col>
               <Form.Label>Location</Form.Label>
@@ -188,7 +169,7 @@ const MenuForm = () => {
             <Col>
               {loading ? (
                 <div className="spinner-border text-dark" role="status">
-                  <span className="visually-hidden">Loading...</span>
+                  
                 </div>
               ) : (
                 <div className="d-grid gap-2 col-12">
