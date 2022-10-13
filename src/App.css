@@ -42,3 +42,7 @@ button.nav-link {
         font-size: 22px;
     }
 }
+
+.calendar-header {
+    background-color: #000000;
+}

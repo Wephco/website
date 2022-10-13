@@ -1,83 +1,116 @@
-import React from "react";
+import React, { useState, useContext } from "react";
 import { Button, Col, Container, Row } from "react-bootstrap";
+import DatePicker from "react-datepicker";
+import { useNavigate } from "react-router-dom";
 
-class Calendar extends React.Component {
+import "react-datepicker/dist/react-datepicker.css";
+import { AppContext } from "../../context/AppContext";
 
-    today = new Date();
-    year = this.today.getFullYear();
-    month = this.today.getMonth();
-    MONTH_NAMES = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
-    startDate;
-    endDate;
+const Calendar = ({ route }) => {
+  const { appState, setAppState } = useContext(AppContext);
 
-    constructor(props) {
-        super(props);
-        let offset = 0; 
-        if (props.monthOffset) {
-            offset = props.monthOffset
-        }
-        this.state = {
-            monthOffset: offset
-        }
+  const [startDate, setStartDate] = useState(new Date());
+  const [endDate, setEndDate] = useState(new Date());
+
+  const navigate = useNavigate();
+
+  const months = [
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December",
+  ];
+
+  const submit = (event) => {
+    event.preventDefault();
+
+    const checkIn = startDate.getDate();
+    const checkOut = endDate.getDate();
+
+    if (checkIn === checkOut || checkIn > checkOut) {
+      alert("Please choose appropriate dates");
+      return;
     }
 
-    getNextMonth() {
-        this.setState({monthOffset: this.state.monthOffset + 1});
-    }
+    setAppState({
+      ...appState,
+      startDate: startDate,
+      endDate: endDate,
+    });
 
-    getPreviousMonth() {
-        this.setState({monthOffset: this.state.monthOffset - 1});
-        if (this.state.monthOffset < 0) {
-            this.setState({monthOffset: 0});
-        }
-    }
+    navigate(route);
+  };
 
+  return (
+    <>
+      <Container>
+        <div className="row d-flex justify-content-center align-items-center">
+          <div className="col-md-8 col-sm-6 mt-2">
+            {/* Header */}
+            <div className="calendar-header mt-3">
+              <h5 className="text-white text-center p-2">CHOOSE DATE</h5>
+            </div>
 
-    getCalendar(lastDayOfMonth) {
-        let weeks = [[], [], [], [], []]
-        let wholeMonth = [];
-        let curDay = new Date(lastDayOfMonth.getFullYear(), lastDayOfMonth.getMonth(), 1);
-        
-        for(let i = 0; i< weeks.length; i++) {
-            for(let j = 0; j<= 6; j++) {
-                const key = i.toString() + j.toString();
-                if (curDay.getDay() > j) {
-                    console.log('ADDING EMPTY COL')
-                    weeks[i].push(<Col key={key}></Col>)
-                } else {
-                    weeks[i].push(<Col key={key}>{curDay.getDate()}</Col>)
-                    curDay.setDate(curDay.getDate()+1);
-                }
-            }
-            wholeMonth.push(<Row key={"week" + i}>{
-                
-                weeks[i]
-                
-                }</Row>)
-        }
-        console.log('WEEKS', weeks)
-        return (
-                <div>
-                    <div>{this.MONTH_NAMES[lastDayOfMonth.getMonth()]} {lastDayOfMonth.getFullYear()}</div>
-                    {wholeMonth}
+            {/* Date Input */}
+            <Row>
+              <Col className="p-2">
+                <p className="lead text-center">
+                  <i className="bi bi-circle-fill mr-2">Check-in Date</i>
+                </p>
+                <p className="text-center">
+                  {startDate.getDate()} {months[startDate.getMonth()]}{" "}
+                  {startDate.getFullYear()}{" "}
+                </p>
+                <div className="text-center">
+                  <DatePicker
+                    className="text-center"
+                    showPreviousMonths={false}
+                    selected={startDate}
+                    onChange={(date) => setStartDate(date)}
+                  />
                 </div>
-        )
-    }
+              </Col>
+              <Col className="p-2">
+                <p className="lead text-center">
+                  <i
+                    style={{ color: "red" }}
+                    className="bi bi-circle-fill mr-2"
+                  >
+                    Check-out Date
+                  </i>
+                </p>
+                <p className="text-center">
+                  {endDate.getDate()} {months[endDate.getMonth()]}{" "}
+                  {endDate.getFullYear()}
+                </p>
+                <div className="text-center">
+                  <DatePicker
+                    className="text-center"
+                    selected={endDate}
+                    onChange={(date) => setEndDate(date)}
+                  />
+                </div>
+              </Col>
+            </Row>
+            {/* submit button */}
+            <div className="text-center mt-5">
+              <Button variant="dark" onClick={submit}>
+                CONTINUE
+              </Button>
+            </div>
+          </div>
+        </div>
+      </Container>
+    </>
+  );
+};
 
-    render() {
-        this.curMonth1 = new Date(this.year, this.month+this.state.monthOffset, 0);
-        this.curMonth2 = new Date(this.year, this.month+this.state.monthOffset+1, 0);
-        this.month1Cal = this.getCalendar(this.curMonth1);
-        this.month2Cal = this.getCalendar(this.curMonth2);
-        return (
-            <Container>
-                <Button onClick={this.getPreviousMonth.bind(this)}>Previous Month</Button>
-                <Button onClick={this.getNextMonth.bind(this)}>Next Month</Button>
-                {this.month1Cal}
-                {this.month2Cal}
-            </Container>
-        )
-    }
-}
-
-export { Calendar }
+export default Calendar;
