@@ -7,71 +7,53 @@ import { useNavigate } from "react-router-dom";
 // import { formatNumber } from "../../../utils/formatNumber";
 
 const MenuForm = () => {
-  const { changeState } = useContext(AppContext);
+  const { appState, setAppState } = useContext(AppContext);
 
   const navigate = useNavigate();
 
-  const [location, setLocation] = useState("");
-  const [property, setProperty] = useState("");
-  const [bedroom, setBedroom] = useState(0);
-  const [budget, setBudget] = useState("");
-  const [loading, setLoading] = useState(false);
+  const [loading] = useState(false);
 
   const changeLocation = async (event) => {
-    changeState("location", event.target.value);
-    setLocation(event.target.value);
+    setAppState({
+      ...appState,
+      location: event.target.value,
+    });
+    
   };
 
   const selectProperty = async (event) => {
-    changeState("property", event.target.value);
-    setProperty(event.target.value);
+    setAppState({
+      ...appState,
+      property: event.target.value,
+    });
+    
   };
 
   const selectBedroom = async (event) => {
-    changeState("bedroom", event.target.value);
-    setBedroom(event.target.value);
+    setAppState({
+      ...appState,
+      bedroom: event.target.value,
+    });
+    
   };
 
   const changeBudget = async (event) => {
     const chosenBudget = event.target.selectedOptions[0].getAttribute("budget");
-    setBudget(event.target.value);
-    sessionStorage.setItem("budget", event.target.value);
-    // await changeState("budget", event.target.value);
-    await changeState("maxBudget", chosenBudget);
-  };
-
-  // const setValues = async () => {
-
-  //   await changeState("bedroom", bedroom);
-  //   await changeState("property", property);
-  //   await changeState("location", location);
-  // };
-
-  const sendDetails = async () => {
-    try {
-      setLoading(true);
-
-      // await setValues();
-
-      // save to firebase
-
-      navigate("/real-estate/review");
-    } catch (error) {
-      console.log(error);
-      alert(
-        "We're experiencing some downtime at the moment. Please try again later"
-      );
-    } finally {
-      setLoading(false);
-    }
+    
+    setAppState({
+      ...appState,
+      budget: event.target.value,
+      maxBudget: chosenBudget,
+    });
+    
   };
 
   const continueRequest = async () => {
-    if (location === "") {
+    if (appState.location === "") {
       alert("Please enter a location.");
       return;
     }
-    if (property === "") {
+    if (appState.property === "") {
       alert("Please select a property.");
       return;
     }
@@ -79,41 +61,40 @@ const MenuForm = () => {
     //   alert("Please select bedroom size.");
     //   return;
     // }
-    if (budget === "") {
+    if (appState.budget === "") {
       alert("Please enter your budget");
       return;
     }
 
-    if (budget === "₦20,000,000 and above") {
+    if (appState.budget === "₦20,000,000 and above") {
       navigate("/contact-us");
       return;
     }
-    // const authenticated = appState.isAuthenticated;
-    // if (!authenticated) {
-    //   navigate("/login");
-    // } else {
-    //   // make API call to send details to database
-    //   await sendDetails();
-    // }
-    await sendDetails();
+    const authenticated = appState.isAuthenticated;
+    if (!authenticated) {
+      navigate("/login");
+    } else {
+      // make API call to send details to database
+      navigate("/real-estate/review");
+    }
   };
 
   return (
     <div>
       <Form>
-        <fieldset disabled={loading}>
+        <fieldset>
           <Row>
             <Col>
               <Form.Label>Location</Form.Label>
               <Form.Control
                 type="text"
-                value={location}
+                value={appState.location}
                 onChange={changeLocation}
               />
             </Col>
             <Col>
               <Form.Label>Property</Form.Label>
-              <Form.Select value={property} onChange={selectProperty}>
+              <Form.Select value={appState.property} onChange={selectProperty}>
                 <option value="-">-</option>
                 <option value="Residential">Residential</option>
                 <option value="Commercial">Commercial</option>
@@ -123,7 +104,7 @@ const MenuForm = () => {
             </Col>
             <Col>
               <Form.Label>Bedroom</Form.Label>
-              <Form.Select value={bedroom} onChange={selectBedroom}>
+              <Form.Select value={appState.bedroom} onChange={selectBedroom}>
                 <option value={0}>-</option>
                 <option value={1}>1</option>
                 <option value={2}>2</option>
@@ -134,7 +115,7 @@ const MenuForm = () => {
             </Col>
             <Col>
               <Form.Label>Budget Range</Form.Label>
-              <Form.Select value={budget} onChange={changeBudget}>
+              <Form.Select value={appState.budget} onChange={changeBudget}>
                 <option budget={0} value="">
                   -
                 </option>
@@ -188,7 +169,7 @@ const MenuForm = () => {
             <Col>
               {loading ? (
                 <div className="spinner-border text-dark" role="status">
-                  <span className="visually-hidden">Loading...</span>
+                  
                 </div>
               ) : (
                 <div className="d-grid gap-2 col-12">
