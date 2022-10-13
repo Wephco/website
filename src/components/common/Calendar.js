@@ -2,7 +2,7 @@ import React, { useState, useContext } from "react";
 import { Button, Col, Container, Row } from "react-bootstrap";
 import DatePicker from "react-datepicker";
 import { useNavigate } from "react-router-dom";
-
+import Toasts from "./Toast";
 import "react-datepicker/dist/react-datepicker.css";
 import { AppContext } from "../../context/AppContext";
 
@@ -11,6 +11,7 @@ const Calendar = ({ route }) => {
 
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
+  const [showToast, setShowToast] = useState(false);
 
   const navigate = useNavigate();
 
@@ -34,9 +35,15 @@ const Calendar = ({ route }) => {
 
     const checkIn = startDate.getDate();
     const checkOut = endDate.getDate();
+    const dateToday = new Date().getDate();
+    
+    if (checkIn < dateToday){
+        setShowToast(true);
+      return;
+    }
 
     if (checkIn === checkOut || checkIn > checkOut) {
-      alert("Please choose appropriate dates");
+      setShowToast(true);
       return;
     }
 
@@ -49,8 +56,18 @@ const Calendar = ({ route }) => {
     navigate(route);
   };
 
+  let toast = (
+    <Toasts
+      open={showToast}
+      close={() => setShowToast(false)}
+      content="Sample Toast"
+      //   variant='primary'
+    />
+  );
+
   return (
     <>
+      {toast}
       <Container>
         <div className="row d-flex justify-content-center align-items-center">
           <div className="col-md-8 col-sm-6 mt-2">
