@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Row, Col, Container, Form, Button, Card } from "react-bootstrap";
+import { Row, Col, Container, Form, Button } from "react-bootstrap";
 import authImage from "../../../images/auth.png";
 import Footer from "../../common/Footer";
 // import { endpoints } from "../../../utils/URL";
@@ -18,7 +18,7 @@ const Register = () => {
   });
   const [loading, setLoading] = useState(false);
 
-  const [paymentPlan, setPaymentPlan] = useState("");
+  // const [paymentPlan, setPaymentPlan] = useState("");
 
   const handleChange = (input) => (event) => {
     setLocalState({
@@ -28,10 +28,10 @@ const Register = () => {
   };
 
   const register = async () => {
-    if (paymentPlan === "") {
-      alert("Please click on the cards to choose a payment plan");
-      return;
-    }
+    // if (paymentPlan === "") {
+    //   alert("Please click on the cards to choose a payment plan");
+    //   return;
+    // }
     if (
       localState.email === "" ||
       localState.name === "" ||
@@ -60,9 +60,9 @@ const Register = () => {
       });
   };
 
-  const selectPaymentPlan = (plan) => {
-    setPaymentPlan(plan);
-  };
+  // const selectPaymentPlan = (plan) => {
+  //   setPaymentPlan(plan);
+  // };
 
   return (
     <div className="mt-5">
@@ -104,7 +104,7 @@ const Register = () => {
                       onChange={handleChange("email")}
                     />
                   </Form.Group>
-                  <Form.Group className="mb-5">
+                  {/* <Form.Group className="mb-5">
                     <h3 className="text-center">Payment Plans</h3>
                     <Row>
                       <Col className="my-2" sm={12} md={6}>
@@ -159,7 +159,7 @@ const Register = () => {
                         </Card>
                       </Col>
                     </Row>
-                  </Form.Group>
+                  </Form.Group> */}
                   {loading ? (
                     <div className="spinner-border text-dark" role="status">
                       <span className="visually-hidden">Loading...</span>
