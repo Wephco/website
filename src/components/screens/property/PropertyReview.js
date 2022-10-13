@@ -1,41 +1,36 @@
-import React, { useState, useEffect, useContext, useCallback } from "react";
-import { Container, Form, Row, Button, Col } from "react-bootstrap";
+import React, { useState, useContext, useEffect } from "react";
+import { Container, Form, Row, Button, Col, Card } from "react-bootstrap";
 import { AppContext } from "../../../context/AppContext";
 import { formatNumber } from "../../../utils/formatNumber";
 import { usePaystackPayment } from "react-paystack";
-import axios from "axios";
-import { endpoints } from "../../../utils/URL";
+// import axios from "axios";
+// import { endpoints } from "../../../utils/URL";
 import { useNavigate } from "react-router-dom";
+import UserDetailsModal from "./UserDetailsModal";
 
 const PropertyReview = () => {
   const { appState } = useContext(AppContext);
 
   const navigate = useNavigate();
 
-  const [serviceCharge, setServiceCharge] = useState(0);
-  const [paymentPlan, setPaymentPlan] = useState("1%");
+  const [budget] = useState(appState.maxBudget);
+  const [paymentPlan, setPaymentPlan] = useState("Wephco Basic");
+  const [serviceCharge, setServiceCharge] = useState(appState.serviceCharge);
+  const [amount, setAmount] = useState(0);
+
+  const [showModal, setShowModal] = useState(false);
 
   const [notes, setNotes] = useState("");
 
-  const getServiceCharge = useCallback(async () => {
-    var plan = sessionStorage.getItem("plan");
-    if (plan != null) {
-      if (plan === "Basic") {
-        setPaymentPlan("1%");
-        const charge = appState.budget * 0.01;
-        setServiceCharge(charge);
-      }
-      if (plan === "Classic") {
-        setPaymentPlan("2.5%");
-        const charge = appState.budget * 0.025;
-        setServiceCharge(charge);
-      }
+  const updateServiceCharge = (plan) => {
+    if (plan === "Basic") {
+      setServiceCharge(0.01);
+      setPaymentPlan("Wephco Basic");
     } else {
-      setPaymentPlan("1%");
-      const charge = appState.budget * 0.01;
-      setServiceCharge(charge);
+      setServiceCharge(0.04);
+      setPaymentPlan("Wephco Classic");
     }
-  }, [appState.budget]);
+  };
 
   // var publicKey =
   //   process.env.NODE_ENV === "development"
@@ -44,44 +39,53 @@ const PropertyReview = () => {
 
   const config = {
     reference: new Date().getTime().toString(),
-    email: sessionStorage.getItem("email"),
-    amount: serviceCharge * 100,
+    email: appState.email,
+    amount: amount * 100,
+    metadata: {
+      name: appState.name,
+      phone: appState.phone
+    },
+    // public key not picked roperly from .env file. leaving here for now.
     publicKey: "pk_live_901de7c33d05fe01fbdd46cf921da1bd3de22431",
   };
 
-  const onSuccess = async (reference) => {
-    //make API call to store paystack reference details
-    const payload = {
-      reference: reference,
-      notes: notes,
-    };
-    const response = await axios.post(
-      endpoints.References.postNewReference,
-      payload
-    );
-    if (response.status === 200) {
-      navigate("/thank-you");
-    }
+  const onSuccess = (reference) => {
+    console.log(reference);
+    navigate("/thank-you");
   };
 
   const onClose = () => {
     console.log("Payment Closed");
   };
 
-  useEffect(() => {
-    getServiceCharge();
-  }, [getServiceCharge]);
-
   const initializePayment = usePaystackPayment(config);
+
+  useEffect(() => {
+    setAmount(serviceCharge * budget);
+  }, [serviceCharge, budget]);
+
+  let userDetails = (
+    <UserDetailsModal open={showModal} close={() => setShowModal(false)} />
+  );
 
   return (
     <div>
+      {userDetails}
       <Container>
-        <h3 className="text-center" style={{ marginTop: "50px" }}>
-          Your Selection Details
-        </h3>
+        <div className="text-center" style={{ marginTop: "50px" }}>
+          <Row>
+            <Col>
+              <i onClick={() => navigate(-1)} className="bi bi-arrow-left">Back</i>
+            </Col>
+            <Col>
+              <h3 className="">Your Selection Details</h3>
+            </Col>
+            <Col></Col>
+          </Row>
+        </div>
+
         <div className="row d-flex justify-content-center align-items-center">
-          <div className="col-md-6 col-sm-6 mt-5">
+          <div className="col-md-7 col-sm-7 mt-5">
             <Form>
               <Row>
                 <Col>
@@ -95,7 +99,7 @@ const PropertyReview = () => {
                     <Form.Label>Budget</Form.Label>
                     <Form.Control
                       disabled
-                      value={`₦${formatNumber(appState.budget)}`}
+                      value={`₦${formatNumber(parseInt(appState.maxBudget))}`}
                     />
                   </Form.Group>
                 </Col>
@@ -126,16 +130,98 @@ const PropertyReview = () => {
               </Row>
 
               <p className="text-danger my-2" style={{ fontWeight: "bold" }}>
-                *The Service Charge Payment is {paymentPlan} of your budget
+                *The Service Charge Payment is a percentage of your budget
               </p>
+
+              <Form.Group className="mb-5">
+                <h3 className="text-center">Payment Plans</h3>
+                <Row>
+                  <Col className="my-2" sm={12} md={6}>
+                    <Card
+                      bg={paymentPlan === "Wephco Basic" ? "dark" : ""}
+                      text={paymentPlan === "Wephco Basic" ? "white" : "dark"}
+                      className="text-center"
+                      onClick={() => updateServiceCharge("Basic")}
+                    >
+                      <Card.Header>
+                        Wephco Basic{" "}
+                        <i
+                          style={{ color: "#D8AB34" }}
+                          className="bi bi-star-fill"
+                        ></i>
+                      </Card.Header>
+                      <Card.Body>
+                        <div>
+                          <ul className="lead">
+                            <li>2% Service Charge</li>
+                            <li>Maximum of 7 Properties</li>
+                            <li>
+                              You will be linked with the agent in-charge of the
+                              house
+                            </li>
+                            <li>Inspection fees would be paid</li>
+                            <li>We won't be present during inspections</li>
+                          </ul>
+                        </div>
+                      </Card.Body>
+                    </Card>
+                  </Col>
+                  <Col className="my-2" sm={12} md={6}>
+                    <Card
+                      bg={paymentPlan === "Wephco Classic" ? "dark" : ""}
+                      text={paymentPlan === "Wephco Classic" ? "white" : "dark"}
+                      className="text-center"
+                      onClick={() => updateServiceCharge("Classic")}
+                    >
+                      <Card.Header>
+                        Wephco Classic{" "}
+                        <i
+                          style={{ color: "#D8AB34" }}
+                          className="bi bi-star-fill"
+                        ></i>{" "}
+                        <i
+                          style={{ color: "#D8AB34" }}
+                          className="bi bi-star-fill"
+                        ></i>{" "}
+                        <i
+                          style={{ color: "#D8AB34" }}
+                          className="bi bi-star-fill"
+                        ></i>
+                      </Card.Header>
+                      <Card.Body>
+                        <div>
+                          <ul className="lead">
+                            <li>5% Service Charge</li>
+                            <li>Maximum of 15 Properties</li>
+                            <li>
+                              Wephco will be fully involved with the agent to
+                              secure the house
+                            </li>
+                            <li>No Inspection fee to be paid</li>
+                            <li>
+                              A Wephco rep will be present during inspections
+                            </li>
+                          </ul>
+                        </div>
+                      </Card.Body>
+                    </Card>
+                  </Col>
+                </Row>
+              </Form.Group>
+
               <Button
                 onClick={() => {
-                  initializePayment(onSuccess, onClose);
+                  const email = appState.email
+                  if (email === "" || email === null) {
+                    setShowModal(true);
+                  } else {
+                    initializePayment(onSuccess, onClose);
+                  }
                 }}
                 className="m-2"
                 variant="dark"
               >
-                Proceed to pay ₦{formatNumber(serviceCharge)}
+                Proceed to pay ₦{formatNumber(amount)}
               </Button>
             </Form>
           </div>

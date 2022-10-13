@@ -2,74 +2,58 @@ import React, { useState, useContext } from "react";
 import { AppContext } from "../../../context/AppContext";
 import { Tabs, Tab, Form, Row, Col, Button, Container } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
-import { endpoints } from "../../../utils/URL";
-import { formatNumber } from "../../../utils/formatNumber";
+// import axios from "axios";
+// import { endpoints } from "../../../utils/URL";
+// import { formatNumber } from "../../../utils/formatNumber";
 
 const MenuForm = () => {
-  const { appState, changeState } = useContext(AppContext);
+  const { appState, setAppState } = useContext(AppContext);
 
   const navigate = useNavigate();
 
-  const [location, setLocation] = useState("");
-  const [property, setProperty] = useState("");
-  const [bedroom, setBedroom] = useState(0);
-  const [budget, setBudget] = useState("");
-  const [loading, setLoading] = useState(false);
+  const [loading] = useState(false);
 
   const changeLocation = async (event) => {
-    changeState("location", event.target.value);
-
-    setLocation(event.target.value);
+    setAppState({
+      ...appState,
+      location: event.target.value,
+    });
+    
   };
 
   const selectProperty = async (event) => {
-    changeState("property", event.target.value);
-    setProperty(event.target.value);
+    setAppState({
+      ...appState,
+      property: event.target.value,
+    });
+    
   };
 
   const selectBedroom = async (event) => {
-    changeState("bedroom", event.target.value);
-    setBedroom(event.target.value);
+    setAppState({
+      ...appState,
+      bedroom: event.target.value,
+    });
+    
   };
 
   const changeBudget = async (event) => {
-    changeState("budget", event.target.value);
-    setBudget(event.target.value);
-  };
-
-  const sendDetails = async () => {
-    try {
-      setLoading(true);
-
-      const payload = {
-        name: sessionStorage.getItem("name"),
-        email: sessionStorage.getItem("email"),
-        phone: sessionStorage.getItem("phone"),
-        location: location,
-        property: property,
-        bedroom: bedroom,
-        budget: formatNumber(parseFloat(budget)),
-      };
-
-      await axios.post(endpoints.RealEstateRequests.postNewRequest, payload);
-
-      navigate("/real-estate/review");
-    } catch (error) {
-      alert(
-        "We're experiencing some downtime at the moment. Please try again later"
-      );
-    } finally {
-      setLoading(false);
-    }
+    const chosenBudget = event.target.selectedOptions[0].getAttribute("budget");
+    
+    setAppState({
+      ...appState,
+      budget: event.target.value,
+      maxBudget: chosenBudget,
+    });
+    
   };
 
   const continueRequest = async () => {
-    if (location === "") {
+    if (appState.location === "") {
       alert("Please enter a location.");
       return;
     }
-    if (property === "") {
+    if (appState.property === "") {
       alert("Please select a property.");
       return;
     }
@@ -77,12 +61,12 @@ const MenuForm = () => {
     //   alert("Please select bedroom size.");
     //   return;
     // }
-    if (budget === "") {
+    if (appState.budget === "") {
       alert("Please enter your budget");
       return;
     }
 
-    if (budget === "₦20,000,000 and above") {
+    if (appState.budget === "₦20,000,000 and above") {
       navigate("/contact-us");
       return;
     }
@@ -91,26 +75,26 @@ const MenuForm = () => {
       navigate("/login");
     } else {
       // make API call to send details to database
-      await sendDetails();
+      navigate("/real-estate/review");
     }
   };
 
   return (
     <div>
       <Form>
-        <fieldset disabled={loading}>
+        <fieldset>
           <Row>
             <Col>
               <Form.Label>Location</Form.Label>
               <Form.Control
                 type="text"
-                value={location}
+                value={appState.location}
                 onChange={changeLocation}
               />
             </Col>
             <Col>
               <Form.Label>Property</Form.Label>
-              <Form.Select value={property} onChange={selectProperty}>
+              <Form.Select value={appState.property} onChange={selectProperty}>
                 <option value="-">-</option>
                 <option value="Residential">Residential</option>
                 <option value="Commercial">Commercial</option>
@@ -120,7 +104,7 @@ const MenuForm = () => {
             </Col>
             <Col>
               <Form.Label>Bedroom</Form.Label>
-              <Form.Select value={bedroom} onChange={selectBedroom}>
+              <Form.Select value={appState.bedroom} onChange={selectBedroom}>
                 <option value={0}>-</option>
                 <option value={1}>1</option>
                 <option value={2}>2</option>
@@ -131,35 +115,73 @@ const MenuForm = () => {
             </Col>
             <Col>
               <Form.Label>Budget Range</Form.Label>
-              <Form.Select value={budget} onChange={changeBudget}>
-                <option value="">-</option>
-                <option value="less than ₦1,000,000">
+              <Form.Select value={appState.budget} onChange={changeBudget}>
+                <option budget={0} value="">
+                  -
+                </option>
+                <option
+                  budget={1000000}
+                  id="1000000"
+                  value="less than ₦1,000,000"
+                >
                   less than ₦1,000,000
                 </option>
-                <option value="₦1,000,000 - ₦3,000,000">
+                <option
+                  budget={3000000}
+                  id="3000000"
+                  value="₦1,000,000 - ₦3,000,000"
+                >
                   ₦1,000,000 - ₦3,000,000
                 </option>
-                <option value="₦3,000,000 - ₦5,000,000">
+                <option
+                  budget={5000000}
+                  id="5000000"
+                  value="₦3,000,000 - ₦5,000,000"
+                >
                   ₦3,000,000 - ₦5,000,000
                 </option>
-                <option value="₦5,000,000 - ₦10,000,000">
+                <option
+                  budget={10000000}
+                  id="10000000"
+                  value="₦5,000,000 - ₦10,000,000"
+                >
                   ₦5,000,000 - ₦10,000,000
                 </option>
-                <option value="₦10,000,000 - ₦15,000,000">
+                <option
+                  budget={15000000}
+                  id="15000000"
+                  value="₦10,000,000 - ₦15,000,000"
+                >
                   ₦10,000,000 - ₦15,000,000
                 </option>
-                <option value="₦15,000,000 - ₦19,000,000">
+                <option
+                  budget={19000000}
+                  id="19000000"
+                  value="₦15,000,000 - ₦19,000,000"
+                >
                   ₦15,000,000 - ₦19,000,000
                 </option>
-                <option value="₦20,000,000 and above">
+                <option budget={20000000} value="₦20,000,000 and above">
                   ₦20,000,000 and above
                 </option>
               </Form.Select>
             </Col>
             <Col>
-              <Button onClick={continueRequest} className="mt-4" variant="dark">
-                Continue
-              </Button>
+              {loading ? (
+                <div className="spinner-border text-dark" role="status">
+                  
+                </div>
+              ) : (
+                <div className="d-grid gap-2 col-12">
+                  <Button
+                    onClick={continueRequest}
+                    className="mt-4"
+                    variant="dark"
+                  >
+                    Continue
+                  </Button>
+                </div>
+              )}
             </Col>
           </Row>
         </fieldset>

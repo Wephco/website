@@ -2,13 +2,15 @@ import React, { useState, useContext } from "react";
 import { Row, Col, Container, Form, Button } from "react-bootstrap";
 import authImage from "../../../images/auth.png";
 import Footer from "../../common/Footer";
-import { endpoints } from "../../../utils/URL";
-import axios from "axios";
+// import { endpoints } from "../../../utils/URL";
+// import axios from "axios";
 import { AppContext } from "../../../context/AppContext";
 import { useNavigate, Link } from "react-router-dom";
+import { auth } from "../../../firebase/firebaseInitialisation";
+import { signInWithEmailAndPassword } from "firebase/auth";
 
 const Login = () => {
-  const { changeState } = useContext(AppContext);
+  const { appState, setAppState } = useContext(AppContext);
 
   const navigate = useNavigate();
 
@@ -24,35 +26,34 @@ const Login = () => {
     setPhone(event.target.value);
   };
 
-  const login = async () => {
+  const loginUser = async (event) => {
+    event.preventDefault();
+
     setLoading(true);
-    try {
-      const payload = {
-        email: email,
-        phone: phone,
-      };
-      const response = await axios.post(endpoints.Auth.login, payload);
-      if (response.status === 200) {
-        const userData = response.data;
-        sessionStorage.setItem("name", userData.name);
-        sessionStorage.setItem("email", userData.user);
-        sessionStorage.setItem("phone", userData.phone);
-        sessionStorage.setItem("plan", userData.paymentPlan);
-        // await changeState("name", userData.name);
-        // await changeState("email", userData.user);
-        // await changeState("phone", userData.phone);
-        await changeState("isAuthenticated", true);
-        navigate("/find-a-property");
-      } else if (response.status === 400 || response.status === 401) {
-        alert("Email/Phone incorrect");
-      } else {
-        alert("Server Error. Please try again later");
-      }
-    } catch (error) {
-      alert("Unavailable at the moment. Try again later");
-    } finally {
-      setLoading(false);
-    }
+
+    signInWithEmailAndPassword(auth, email, phone)
+      .then((userCredential) => {
+        // Signed in
+        const user = userCredential.user;
+
+        setAppState({
+          ...appState,
+          name: user.displayName,
+          email: user.email,
+          phone: user.phoneNumber,
+          imageUrl: user.photoURL,
+          isAuthenticated: true,
+        });
+        navigate("/real-estate/review");
+      })
+      .catch((error) => {
+        // const errorCode = error.code;
+        const errorMessage = error.message;
+        alert(`Error logging in. ${errorMessage}`);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
   };
 
   return (
@@ -86,12 +87,12 @@ const Login = () => {
                       />
                     </Form.Group>
                     {loading ? (
-                      <div class="spinner-border text-dark" role="status">
-                        <span class="visually-hidden">Loading...</span>
+                      <div className="spinner-border text-dark" role="status">
+                        <span className="visually-hidden">Loading...</span>
                       </div>
                     ) : (
                       <div className="d-grid gap-2 col-12">
-                        <Button onClick={login} variant="dark">
+                        <Button onClick={loginUser} variant="dark">
                           Login
                         </Button>
                       </div>

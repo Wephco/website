@@ -39,6 +39,14 @@ function App() {
           <Route path="/hotel-reservation" element={<Hotel />} />
         </Routes>
       </BrowserRouter>
+      <a
+        href="https://wa.me/2349161246300"
+        className="whatsapp_float"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        <i className="bi bi-whatsapp"></i>
+      </a>
     </AppProvider>
   );
 }

@@ -1,11 +1,11 @@
-import React, { useContext } from "react";
-import { Navbar, Container, Nav, Button } from "react-bootstrap";
+// import React, { useContext } from "react";
+import { Navbar, Container, Nav } from "react-bootstrap";
 import logo from "../../images/logo.svg";
 import { Link } from "react-router-dom";
-import { AppContext } from "../../context/AppContext";
+// import { AppContext } from "../../context/AppContext";
 
 export const TopNav = () => {
-  const { appState } = useContext(AppContext);
+  // const { appState } = useContext(AppContext);
 
   return (
     <Navbar expand="lg">
@@ -53,7 +53,7 @@ export const TopNav = () => {
               </Link>
             </Nav.Item>
           </Nav>
-          {appState.isAuthenticated ? (
+          {/* {appState.isAuthenticated ? (
             <Nav>
               <Nav.Item className="mx-2 my-1">
                 {sessionStorage.getItem("name")}
@@ -75,7 +75,7 @@ export const TopNav = () => {
                 </Link>
               </Nav.Item>
             </Nav>
-          )}
+          )} */}
         </Navbar.Collapse>
       </Container>
     </Navbar>
