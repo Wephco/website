@@ -31,7 +31,7 @@ const Hotel = () => {
           Hotel Reservation
         </h4>
       </div>
-      <Calendar route="/" />
+      <Calendar route="/hotel-reservation-details" />
     </Container>
   );
 };

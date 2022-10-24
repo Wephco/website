@@ -3,8 +3,9 @@ import { Button, Col, Container, Row } from "react-bootstrap";
 import DatePicker from "react-datepicker";
 import { useNavigate } from "react-router-dom";
 import Toasts from "./Toast";
-import "react-datepicker/dist/react-datepicker.css";
 import { AppContext } from "../../context/AppContext";
+
+import "react-datepicker/dist/react-datepicker.css";
 
 const Calendar = ({ route }) => {
   const { appState, setAppState } = useContext(AppContext);
@@ -12,6 +13,8 @@ const Calendar = ({ route }) => {
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
   const [showToast, setShowToast] = useState(false);
+  const [toastContent, setToastContent] = useState("");
+  const [toastVariant, setToastVariant] = useState("");
 
   const navigate = useNavigate();
 
@@ -33,16 +36,20 @@ const Calendar = ({ route }) => {
   const submit = (event) => {
     event.preventDefault();
 
-    const checkIn = startDate.getDate();
-    const checkOut = endDate.getDate();
-    const dateToday = new Date().getDate();
-    
-    if (checkIn < dateToday){
-        setShowToast(true);
+    const checkIn = startDate.getTime();
+    const checkOut = endDate.getTime();
+    const dateToday = new Date().getTime();
+
+    if (checkIn < dateToday) {
+      setToastContent("Please select a valid check-in date");
+      setToastVariant("warning");
+      setShowToast(true);
       return;
     }
 
     if (checkIn === checkOut || checkIn > checkOut) {
+      setToastContent("Please select a valid check-out date");
+      setToastVariant("warning");
       setShowToast(true);
       return;
     }
@@ -60,8 +67,8 @@ const Calendar = ({ route }) => {
     <Toasts
       open={showToast}
       close={() => setShowToast(false)}
-      content="Sample Toast"
-      //   variant='primary'
+      content={toastContent}
+      variant={toastVariant}
     />
   );
 

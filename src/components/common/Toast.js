@@ -7,10 +7,6 @@ const Toasts = ({ open, close, content, variant }) => {
   return (
     <ToastContainer position="top-end" className="p-3">
       <Toast show={open} onClose={close} bg={variant.toLowerCase()} autohide>
-        <Toast.Header>
-          <strong className="me-auto">Bootstrap</strong>
-          <small>11 mins ago</small>
-        </Toast.Header>
         <Toast.Body
           className={variant === "light" ? "text-dark" : "text-white"}
         >

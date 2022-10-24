@@ -11,6 +11,7 @@ import ThankYou from "./components/common/ThankYou";
 import ContactUs from "./components/screens/contact/ContactUs";
 import Landing from "./components/screens/exclusive/Landing";
 import Hotel from "./components/screens/hotel/Hotel";
+import HotelReservation from "./components/screens/hotel/HotelReservation";
 
 // Auth
 import Login from "./components/screens/auth/Login";
@@ -37,6 +38,7 @@ function App() {
           <Route path="/contact-us" element={<ContactUs />} />
           <Route path="/exclusive-offers" element={<Landing />} />
           <Route path="/hotel-reservation" element={<Hotel />} />
+          <Route path="/hotel-reservation-details" element={<HotelReservation />} />
         </Routes>
       </BrowserRouter>
       <a
