@@ -27,7 +27,7 @@ const Landing = () => {
             <Row>
               <Col sm={12} md={4}>
                 <Link
-                  to="/"
+                  to="/hotel-reservation"
                   style={{
                     textDecoration: "none",
                     color: "black",

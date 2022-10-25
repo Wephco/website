@@ -7,6 +7,9 @@ import { usePaystackPayment } from "react-paystack";
 // import { endpoints } from "../../../utils/URL";
 import { useNavigate } from "react-router-dom";
 import UserDetailsModal from "./UserDetailsModal";
+import { collection, addDoc } from "firebase/firestore";
+import { db } from "../../../firebase/firebaseInitialisation";
+import Toast from "../../common/Toast";
 
 const PropertyReview = () => {
   const { appState } = useContext(AppContext);
@@ -21,6 +24,10 @@ const PropertyReview = () => {
   const [showModal, setShowModal] = useState(false);
 
   const [notes, setNotes] = useState("");
+  const [reservationId, setReservationId] = useState("");
+  const [showToast, setShowToast] = useState(false);
+  const [toastContent, setToastContent] = useState("");
+  const [toastVariant, setToastVariant] = useState("");
 
   const updateServiceCharge = (plan) => {
     if (plan === "Basic") {
@@ -38,15 +45,14 @@ const PropertyReview = () => {
   //     : `${process.env.REACT_APP_LIVE_KEY}`;
 
   const config = {
-    reference: new Date().getTime().toString(),
+    reference: reservationId,
     email: appState.email,
     amount: amount * 100,
     metadata: {
       name: appState.name,
-      phone: appState.phone
+      phone: appState.phone,
     },
-    // public key not picked roperly from .env file. leaving here for now.
-    publicKey: "pk_live_901de7c33d05fe01fbdd46cf921da1bd3de22431",
+    publicKey: process.env.REACT_APP_TEST_KEY,
   };
 
   const onSuccess = (reference) => {
@@ -60,6 +66,30 @@ const PropertyReview = () => {
 
   const initializePayment = usePaystackPayment(config);
 
+  const proceed = async () => {
+    try {
+      const docRef = await addDoc(collection(db, "propertyRequest"), {
+        name: appState.name,
+        phone: appState.phone,
+        email: appState.email,
+        location: appState.location,
+        maxBudget: appState.maxBudget,
+        property: appState.property,
+        numberOfRooms: appState.bedroom,
+        budget: budget,
+        additionalNotes: notes,
+        plan: paymentPlan,
+      });
+
+      setReservationId(docRef.id);
+      initializePayment(onSuccess, onClose);
+    } catch (error) {
+      setToastContent("Error Processing Request. Try Again Later");
+      setToastVariant("error");
+      setShowToast(true);
+    }
+  };
+
   useEffect(() => {
     setAmount(serviceCharge * budget);
   }, [serviceCharge, budget]);
@@ -68,14 +98,26 @@ const PropertyReview = () => {
     <UserDetailsModal open={showModal} close={() => setShowModal(false)} />
   );
 
+  let toast = (
+    <Toast
+      open={showToast}
+      close={() => setShowToast(false)}
+      content={toastContent}
+      variant={toastVariant}
+    />
+  );
+
   return (
     <div>
       {userDetails}
+      {toast}
       <Container>
         <div className="text-center" style={{ marginTop: "50px" }}>
           <Row>
             <Col>
-              <i onClick={() => navigate(-1)} className="bi bi-arrow-left">Back</i>
+              <i onClick={() => navigate(-1)} className="bi bi-arrow-left">
+                Back
+              </i>
             </Col>
             <Col>
               <h3 className="">Your Selection Details</h3>
@@ -211,11 +253,17 @@ const PropertyReview = () => {
 
               <Button
                 onClick={() => {
-                  const email = appState.email
-                  if (email === "" || email === null) {
+                  const email = appState.email;
+                  const name = appState.name;
+                  if (
+                    email === "" ||
+                    email === null ||
+                    name === "" ||
+                    name === null
+                  ) {
                     setShowModal(true);
                   } else {
-                    initializePayment(onSuccess, onClose);
+                    proceed();
                   }
                 }}
                 className="m-2"

@@ -15,7 +15,9 @@ const initialState = {
   serviceCharge: 0.01,
   isAuthenticated: false,
   isAdmin: false,
-  imageUrl: ''
+  imageUrl: '',
+  startDate: new Date(),
+  endDate: new Date()
 };
 
 // create context
