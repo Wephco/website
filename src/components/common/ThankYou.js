@@ -15,8 +15,7 @@ const ThankYou = () => {
                 </h1>
                 <hr />
                 <p className="mb-0">
-                  Thank you for trusting us to find you a new property. We will
-                  contact you shortly.
+                  Thank you for trusting us. We will contact you shortly.
                 </p>
               </div>
             </div>
