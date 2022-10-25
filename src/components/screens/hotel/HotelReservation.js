@@ -48,7 +48,7 @@ const HotelReservation = () => {
       name: fullName,
       phone: phone,
     },
-    publicKey: process.env.REACT_APP_TEST_KEY,
+    publicKey: process.env.REACT_APP_LIVE_KEY,
   };
 
   const onSuccess = (reference) => {

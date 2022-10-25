@@ -52,7 +52,7 @@ const PropertyReview = () => {
       name: appState.name,
       phone: appState.phone,
     },
-    publicKey: process.env.REACT_APP_TEST_KEY,
+    publicKey: process.env.REACT_APP_LIVE_KEY,
   };
 
   const onSuccess = (reference) => {
