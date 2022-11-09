@@ -13,6 +13,7 @@ const ReservationDate = ({ title, route }) => {
           textDecoration: "none",
           color: "black",
           fontWeight: "bold",
+          cursor: "pointer",
         }}
         onClick={() => navigate(-1)}
         className="bi bi-arrow-left mr-3"

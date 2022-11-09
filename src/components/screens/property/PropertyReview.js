@@ -85,7 +85,7 @@ const PropertyReview = () => {
       initializePayment(onSuccess, onClose);
     } catch (error) {
       setToastContent("Error Processing Request. Try Again Later");
-      setToastVariant("error");
+      setToastVariant("danger");
       setShowToast(true);
     }
   };
