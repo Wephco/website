@@ -8,7 +8,7 @@ import Toast from "../../common/Toast";
 import { collection, addDoc } from "firebase/firestore";
 import { db } from "../../../firebase/firebaseInitialisation";
 
-const HotelReservation = () => {
+const MeetingRoomReservation = () => {
   const { appState } = useContext(AppContext);
 
   const navigate = useNavigate();
@@ -16,9 +16,10 @@ const HotelReservation = () => {
   const [fullName, setFullName] = useState("");
   const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");
-  const [guests, setGuests] = useState("");
-  const [rooms, setRooms] = useState(0);
-  const [budget, setBudget] = useState(0);
+  const [guests, setGuests] = useState(0);
+  const [location, setLocation] = useState("");
+  const [budgetPerDay, setBudgetPerDay] = useState(0);
+  const [numberOfDays, setNumberOfDays] = useState(0);
   const [amount, setAmount] = useState(0);
   const [showToast, setShowToast] = useState(false);
   const [toastContent, setToastContent] = useState("");
@@ -40,6 +41,11 @@ const HotelReservation = () => {
     "December",
   ];
 
+  const publicKey =
+    process.env.NODE_ENV === "production"
+      ? process.env.REACT_APP_LIVE_KEY
+      : process.env.REACT_APP_TEST_KEY;
+
   const config = {
     reference: reservationId,
     email: email,
@@ -48,7 +54,7 @@ const HotelReservation = () => {
       name: fullName,
       phone: phone,
     },
-    publicKey: process.env.REACT_APP_LIVE_KEY,
+    publicKey: publicKey,
   };
 
   const onSuccess = (reference) => {
@@ -67,9 +73,10 @@ const HotelReservation = () => {
       fullName === "" ||
       phone === "" ||
       email === "" ||
-      guests === "" ||
-      rooms === 0 ||
-      budget === 0
+      guests === 0 ||
+      location === "" ||
+      budgetPerDay === 0 ||
+      numberOfDays === 0
     ) {
       setToastContent("Please fill in the required fields");
       setToastVariant("warning");
@@ -80,13 +87,14 @@ const HotelReservation = () => {
     e.preventDefault();
 
     try {
-      const docRef = await addDoc(collection(db, "hotelReservation"), {
-        name: fullName,
+      const docRef = await addDoc(collection(db, "meetingRoomReservation"), {
+        fullName: fullName,
         phone: phone,
         email: email,
-        numberOfGuests: guests,
-        numberOfRooms: rooms,
-        budget: budget,
+        guests: guests,
+        location: location,
+        budgetPerDay: budgetPerDay,
+        numberOfDays: numberOfDays,
       });
 
       setReservationId(docRef.id);
@@ -99,8 +107,8 @@ const HotelReservation = () => {
   };
 
   useEffect(() => {
-    setAmount(0.01 * rooms * budget);
-  }, [rooms, budget]);
+    setAmount(0.01 * budgetPerDay * numberOfDays * guests);
+  }, [budgetPerDay, numberOfDays, guests]);
 
   let toast = (
     <Toast
@@ -118,7 +126,11 @@ const HotelReservation = () => {
         <div className="text-center" style={{ marginTop: "50px" }}>
           <Row>
             <Col>
-              <i onClick={() => navigate(-1)} className="bi bi-arrow-left">
+              <i
+                style={{ cursor: "pointer" }}
+                onClick={() => navigate(-1)}
+                className="bi bi-arrow-left"
+              >
                 Back
               </i>
             </Col>
@@ -137,8 +149,10 @@ const HotelReservation = () => {
         <div className="row d-flex justify-content-center align-items-center">
           <div className="col-md-7 col-sm-7 mt-2">
             <Form>
-              <Form.Group className="">
-                <Form.Label className="fw-bold">Your Full Name*</Form.Label>
+              <Form.Group className="m-2">
+                <Form.Label className="fw-bold">
+                  Your Full Name{<span className="text-danger">*</span>}
+                </Form.Label>
                 <input
                   className="form-control"
                   value={fullName}
@@ -147,8 +161,10 @@ const HotelReservation = () => {
                 />
               </Form.Group>
 
-              <Form.Group className="">
-                <Form.Label className="fw-bold">Phone Number*</Form.Label>
+              <Form.Group className="m-2">
+                <Form.Label className="fw-bold">
+                  Phone Number{<span className="text-danger">*</span>}
+                </Form.Label>
                 <input
                   className="form-control"
                   required
@@ -157,8 +173,10 @@ const HotelReservation = () => {
                 />
               </Form.Group>
 
-              <Form.Group>
-                <Form.Label className="fw-bold">Email Address*</Form.Label>
+              <Form.Group className="m-2">
+                <Form.Label className="fw-bold">
+                  Email Address{<span className="text-danger">*</span>}
+                </Form.Label>
                 <input
                   className="form-control"
                   required
@@ -168,10 +186,10 @@ const HotelReservation = () => {
               </Form.Group>
 
               <Row>
-                <Col>
-                  <Form.Group className="">
+                <Col sm={12} md={6}>
+                  <Form.Group className="m-2">
                     <Form.Label className="fw-bold">
-                      Number of Guests*
+                      Number of Guests{<span className="text-danger">*</span>}
                     </Form.Label>
                     <input
                       type="number"
@@ -182,35 +200,56 @@ const HotelReservation = () => {
                     />
                   </Form.Group>
                 </Col>
-                <Col>
-                  <Form.Group className="">
+                <Col sm={12} md={6}>
+                  <Form.Group className="m-2">
                     <Form.Label className="fw-bold">
-                      Number of Rooms*
+                      Location
+                      {<span className="text-danger">*</span>}
                     </Form.Label>
                     <input
-                      type="number"
+                      type="text"
                       className="form-control"
                       required
-                      onChange={(e) => setRooms(e.target.value)}
-                      value={rooms}
+                      onChange={(e) => setLocation(e.target.value)}
+                      value={location}
                     />
                   </Form.Group>
                 </Col>
               </Row>
 
-              <Form.Group>
-                <Form.Label className="fw-bold">Budget Per Room*</Form.Label>
-                <input
-                  type="number"
-                  className="form-control"
-                  required
-                  value={budget}
-                  onChange={(e) => setBudget(e.target.value)}
-                />
-              </Form.Group>
+              <Row>
+                <Col sm={12} md={6}>
+                  <Form.Group className="m-2">
+                    <Form.Label className="fw-bold">
+                      Budget per Day{<span className="text-danger">*</span>}
+                    </Form.Label>
+                    <input
+                      type="number"
+                      className="form-control"
+                      required
+                      onChange={(e) => setBudgetPerDay(e.target.value)}
+                      value={budgetPerDay}
+                    />
+                  </Form.Group>
+                </Col>
+                <Col sm={12} md={6}>
+                  <Form.Group className="m-2">
+                    <Form.Label className="fw-bold">
+                      Number of Days{<span className="text-danger">*</span>}
+                    </Form.Label>
+                    <input
+                      type="number"
+                      className="form-control"
+                      required
+                      onChange={(e) => setNumberOfDays(e.target.value)}
+                      value={numberOfDays}
+                    />
+                  </Form.Group>
+                </Col>
+              </Row>
 
               <p className="text-danger fw-bold">
-                *The Service Charge Payment is a percentage of your budget
+                *The Service Charge Payment is 1% of your total budget
               </p>
 
               <Button onClick={proceed} className="m-2" variant="dark">
@@ -224,4 +263,4 @@ const HotelReservation = () => {
   );
 };
 
-export default HotelReservation;
+export default MeetingRoomReservation;

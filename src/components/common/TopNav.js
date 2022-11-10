@@ -35,9 +35,9 @@ export const TopNav = () => {
                   color: "black",
                   fontWeight: "bold",
                 }}
-                to="/"
+                to="/diaspora-plans"
               >
-                Testimonial
+                Diaspora Plans
               </Link>
             </Nav.Item>
             <Nav.Item className="mx-5 my-1">
