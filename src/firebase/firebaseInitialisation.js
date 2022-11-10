@@ -8,7 +8,7 @@ import { getAuth } from "firebase/auth";
 
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
-const firebaseConfig = {
+const firebaseTestConfig = {
   apiKey: "AIzaSyA-ihSCT_AYJW0KtBeCVEFpV3jrlklC-TI",
   authDomain: "wephco-site.firebaseapp.com",
   projectId: "wephco-site",
@@ -17,6 +17,21 @@ const firebaseConfig = {
   appId: "1:980291792832:web:ae87e0537aa7f275472225",
   measurementId: "G-E5738LW8X7",
 };
+
+const firebaseLiveConfig = {
+  apiKey: "AIzaSyD_uQx2xyoKQJBeIRdQNUbH7CtvM7vHYtc",
+  authDomain: "wephco-website-417eb.firebaseapp.com",
+  projectId: "wephco-website-417eb",
+  storageBucket: "wephco-website-417eb.appspot.com",
+  messagingSenderId: "1092640047441",
+  appId: "1:1092640047441:web:2107c84f376883c2ff5370",
+  measurementId: "G-ZHMYMF9L96",
+};
+
+const firebaseConfig =
+  process.env.NODE_ENV === "production"
+    ? firebaseLiveConfig
+    : firebaseTestConfig;
 
 // Initialize Firebase
 export const app = initializeApp(firebaseConfig);
