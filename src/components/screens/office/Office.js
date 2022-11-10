@@ -1,15 +1,15 @@
 import React from "react";
 import ReservationDate from "../../common/ReservationDate";
 
-const Hotel = () => {
+const Office = () => {
   return (
     <>
       <ReservationDate
-        title="Hotel Reservation"
-        route="/hotel-reservation-details"
+        title="Office Space Reservation"
+        route="/office-reservation-details"
       />
     </>
   );
 };
 
-export default Hotel;
+export default Office;

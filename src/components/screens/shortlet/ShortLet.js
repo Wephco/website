@@ -1,15 +1,15 @@
 import React from "react";
 import ReservationDate from "../../common/ReservationDate";
 
-const Hotel = () => {
+const ShortLet = () => {
   return (
     <>
       <ReservationDate
-        title="Hotel Reservation"
-        route="/hotel-reservation-details"
+        title="Shortlet/Apartment Reservation"
+        route="/shortlet-reservation-details"
       />
     </>
   );
 };
 
-export default Hotel;
+export default ShortLet;

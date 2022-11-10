@@ -47,7 +47,7 @@ const Landing = () => {
               </Col>
               <Col sm={12} md={4}>
                 <Link
-                  to="/"
+                  to="/meeting-room"
                   style={{
                     textDecoration: "none",
                     color: "black",
@@ -67,7 +67,7 @@ const Landing = () => {
               </Col>
               <Col sm={12} md={4}>
                 <Link
-                  to="/"
+                  to="/office-reservation"
                   style={{
                     textDecoration: "none",
                     color: "black",
@@ -89,7 +89,7 @@ const Landing = () => {
             <Row>
               <Col sm={12} md={4}>
                 <Link
-                  to="/"
+                  to="/property-management"
                   style={{
                     textDecoration: "none",
                     color: "black",
@@ -109,7 +109,7 @@ const Landing = () => {
               </Col>
               <Col sm={12} md={4}>
                 <Link
-                  to="/"
+                  to="/event-reservation"
                   style={{
                     textDecoration: "none",
                     color: "black",
@@ -129,7 +129,7 @@ const Landing = () => {
               </Col>
               <Col sm={12} md={4}>
                 <Link
-                  to="/"
+                  to="/shortlet"
                   style={{
                     textDecoration: "none",
                     color: "black",
