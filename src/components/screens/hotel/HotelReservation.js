@@ -87,6 +87,8 @@ const HotelReservation = () => {
         numberOfGuests: guests,
         numberOfRooms: rooms,
         budget: budget,
+        statusOfRequest: "Pending",
+        dateOfRequest: new Date().toDateString(),
       });
 
       setReservationId(docRef.id);

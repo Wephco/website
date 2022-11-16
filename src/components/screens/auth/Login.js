@@ -44,6 +44,16 @@ const Login = () => {
           imageUrl: user.photoURL,
           isAuthenticated: true,
         });
+
+        // admin logic here
+          if(user.email === process.env.REACT_APP_ADMIN_EMAIL){
+            setAppState({
+              isAdmin: true
+            })
+
+            navigate('/admin/home')
+          }
+        // end of admin logic
         navigate("/real-estate/review");
       })
       .catch((error) => {

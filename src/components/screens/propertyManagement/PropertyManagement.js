@@ -41,6 +41,8 @@ const PropertyManagement = () => {
           phone: phone,
           email: email,
           address: address,
+          statusOfRequest: "Pending",
+          dateOfRequest: new Date().toDateString(),
         });
         setToastContent("Request sent successfully.");
         setToastVariant("success");

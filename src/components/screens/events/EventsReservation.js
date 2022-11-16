@@ -92,6 +92,8 @@ const EventsReservation = () => {
         guests: guests,
         budgetPerDay: budgetPerDay,
         numberOfDays: numberOfDays,
+        statusOfRequest: "Pending",
+        dateOfRequest: new Date().toDateString(),
       });
 
       setReservationId(docRef.id);
