@@ -43,18 +43,10 @@ const Login = () => {
           phone: user.phoneNumber,
           imageUrl: user.photoURL,
           isAuthenticated: true,
+          isAdmin: true,
         });
 
-        // admin logic here
-          if(user.email === process.env.REACT_APP_ADMIN_EMAIL){
-            setAppState({
-              isAdmin: true
-            })
-
-            navigate('/admin/home')
-          }
-        // end of admin logic
-        navigate("/real-estate/review");
+        navigate("/dashboard");
       })
       .catch((error) => {
         // const errorCode = error.code;

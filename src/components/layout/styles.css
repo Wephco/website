@@ -1,0 +1,28 @@
+.active {
+    color: #f50057 !important;
+    font-weight: 900;
+  }
+  
+  .active > .MuiListItemIcon-root {
+    color: #f50057 !important;
+    font-weight: 900;
+  }
+  
+  .MuiTableRow-root:hover {
+    background: #dedede !important;
+    cursor: pointer;
+  }
+  
+  .side-menu-icons {
+    color: black;
+    text-decoration: none !important;
+    width: 100%;
+  }
+  
+  *,
+  *::before,
+  *::after {
+    transition: 'none !important';
+    animation: 'none !important';
+  }
+  

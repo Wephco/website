@@ -1,106 +1,163 @@
 import React from "react";
-import { signOut } from "firebase/auth";
-import { auth } from "../../firebase/firebaseInitialisation";
-import { useNavigate, Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
+import ListItem from "@material-ui/core/ListItem";
+import ListItemIcon from "@material-ui/core/ListItemIcon";
+import ListItemText from "@material-ui/core/ListItemText";
+import DashboardIcon from "@material-ui/icons/Dashboard";
+import HotelIcon from "@material-ui/icons/Hotel";
+import GroupWorkIcon from "@material-ui/icons/GroupWork";
+import PropertyIcon from "@material-ui/icons/Business";
+import ApartmentIcon from "@material-ui/icons/Apartment";
+import MeetingRoomIcon from "@material-ui/icons/MeetingRoom";
+import EventIcon from "@material-ui/icons/Event";
+import MessageIcon from "@material-ui/icons/Message";
+import Tooltip from "@material-ui/core/Tooltip";
+
+// import { StoreService } from '../../utils/storeService';
+import "./styles.css";
 
 const SideMenu = () => {
-  const navigate = useNavigate();
-
-  const logOut = () => {
-    signOut(auth)
-      .then(() => {
-        navigate("/");
-      })
-      .catch((error) => {});
-  };
-
-  const setActiveNav = (event) => {
-    //remove all active navs
-    let navLinks = document.getElementsByClassName("nav-link");
-    for (let i = 0; i < navLinks.length; i++) {
-      navLinks[i].classList.remove("active");
-    }
-    //set active for the current one
-    event.target.classList.add("active");
-
-    //scroll to top.  <span id='scroll-here'></span> is found in index.tsx
-    let scrollHere = document.getElementById("scroll-here");
-    scrollHere.scrollIntoView();
-
-    //close side menu if open
-    let sideBar = document.getElementById("sidebarMenu");
-    sideBar.classList["toggle"]("show");
-
-    let mainView = document.getElementById("main-view");
-    mainView.classList.remove("col-md-9", "col-lg-10");
-    mainView.classList.add("col-md-12", "col-lg-12");
-  };
 
   return (
-    <nav id="sidebarMenu" className="col-md-3 col-lg-2 sidebar collapse">
-      <div className="sidebar-sticky">
-        <ul className="nav flex-column">
-          {/* <li>
-            <div className='card home-card name-card mt-2'>
-              <div className='card-body'>
-                <div className='row card-text mb-3'>
-                  <div className='col-3 align-items-middle'>
-                    <span className='name-abbr'>{appState.firstName[0]?.toUpperCase()}</span>
-                  </div>
-                  <div className='col-9 align-grid-items-middle'>
-                    <div className='fs-7'>
-                      {appState.firstName?.toLocaleString()} {appState.lastName?.toLocaleString()}
-                    </div>
-                    <div className='fs-9'>Online</div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </li> */}
-          <li className="nav-item sidebar-item">
-            <Link to="/home" className="nav-link active" onClick={setActiveNav}>
-              <span className="bi bi-house me-2"></span>Home
-            </Link>
-          </li>
-          <li className="nav-item sidebar-item">
-            <Link
-              to="/subscriptions/add"
-              className="nav-link"
-              onClick={setActiveNav}
-            >
-              <span className="bi bi-person-plus me-2"></span>Add Subscription
-            </Link>
-          </li>
-          <li className="nav-item sidebar-item">
-            <Link
-              to="/subscriptions"
-              className="nav-link"
-              onClick={setActiveNav}
-            >
-              <span className="bi bi-people me-2"></span>View Subscriptions
-            </Link>
-          </li>
+    <>
+      <div>
+        <ListItem button>
+          <NavLink to="/dashboard">
+            <Tooltip title="Dashboard">
+              <ListItemIcon>
+                <DashboardIcon />
+              </ListItemIcon>
+            </Tooltip>
+          </NavLink>
+          <NavLink
+            to="/dashboard"
+            activeClassName="active"
+            className="side-menu-icons"
+          >
+            <ListItemText primary="Dashboard" />
+          </NavLink>
+        </ListItem>
 
-          <hr />
+        <ListItem button>
+          <NavLink to="/hotel-reservation">
+            <Tooltip title="Hotel Reservation">
+              <ListItemIcon>
+                <HotelIcon />
+              </ListItemIcon>
+            </Tooltip>
+          </NavLink>
+          <NavLink
+            to="/hotel-reservation"
+            activeClassName="active"
+            className="side-menu-icons"
+          >
+            <ListItemText primary="Hotel Reservation" />
+          </NavLink>
+        </ListItem>
 
-          <hr />
-          <li className="nav-item sidebar-item">
-            <Link to="/profile" className="nav-link" onClick={setActiveNav}>
-              <span className="bi bi-gear me-2"></span>Settings
-            </Link>
-          </li>
-          <li className="nav-item sidebar-item">
-            <div
-              style={{ cursor: "pointer" }}
-              onClick={logOut}
-              className="nav-link"
-            >
-              <span className="bi bi-box-arrow-left me-2"></span> Logout
-            </div>
-          </li>
-        </ul>
+        <ListItem button>
+          <NavLink to="/meeting-room">
+            <Tooltip title="Meeting Room">
+              <ListItemIcon>
+                <MeetingRoomIcon />
+              </ListItemIcon>
+            </Tooltip>
+          </NavLink>
+          <NavLink
+            to="/meeting-room"
+            activeClassName="active"
+            className="side-menu-icons"
+          >
+            <ListItemText primary="Meeting Room" />
+          </NavLink>
+        </ListItem>
+
+        <ListItem button>
+          <NavLink to="/office-space">
+            <Tooltip title="Office Space">
+              <ListItemIcon>
+                <GroupWorkIcon />
+              </ListItemIcon>
+            </Tooltip>
+          </NavLink>
+          <NavLink
+            to="/office-space"
+            activeClassName="active"
+            className="side-menu-icons"
+          >
+            <ListItemText primary="Office Space" />
+          </NavLink>
+        </ListItem>
+
+        <ListItem button>
+          <NavLink to="/property-management">
+            <Tooltip title="Property Management">
+              <ListItemIcon>
+                <PropertyIcon />
+              </ListItemIcon>
+            </Tooltip>
+          </NavLink>
+          <NavLink
+            to="/property-management"
+            activeClassName="active"
+            className="side-menu-icons"
+          >
+            <ListItemText primary="Property Management" />
+          </NavLink>
+        </ListItem>
+
+        <ListItem button>
+          <NavLink to="/event-booking">
+            <Tooltip title="Event/Hall Booking">
+              <ListItemIcon>
+                <EventIcon />
+              </ListItemIcon>
+            </Tooltip>
+          </NavLink>
+          <NavLink
+            to="/event-booking"
+            activeClassName="active"
+            className="side-menu-icons"
+          >
+            <ListItemText primary="Event/Hall Booking" />
+          </NavLink>
+        </ListItem>
+
+        <ListItem button>
+          <NavLink to="/shortlet">
+            <Tooltip title="Shortlets/Apartment">
+              <ListItemIcon>
+                <ApartmentIcon />
+              </ListItemIcon>
+            </Tooltip>
+          </NavLink>
+          <NavLink
+            to="/shortlet"
+            activeClassName="active"
+            className="side-menu-icons"
+          >
+            <ListItemText primary="Shortlets/Apartment" />
+          </NavLink>
+        </ListItem>
+
+        <ListItem button>
+          <NavLink to="/blog-posts">
+            <Tooltip title="Blog Posts">
+              <ListItemIcon>
+                <MessageIcon />
+              </ListItemIcon>
+            </Tooltip>
+          </NavLink>
+          <NavLink
+            to="/blog-posts"
+            activeClassName="active"
+            className="side-menu-icons"
+          >
+            <ListItemText primary="Blog Posts" />
+          </NavLink>
+        </ListItem>
       </div>
-    </nav>
+    </>
   );
 };
 
