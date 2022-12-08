@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback } from "react";
 import { collection, getDocs } from "firebase/firestore";
 import { db } from "../../../../firebase/firebaseInitialisation";
 import { Table } from "react-bootstrap";
-import { formatNumber } from '../../../../utils/formatNumber'
+import { formatNumber } from "../../../../utils/formatNumber";
 
 const HotelTable = () => {
   const [hotelRequests, setHotelRequests] = useState([]);
@@ -64,6 +64,10 @@ const HotelTable = () => {
       <div className="my-5 h4">Hotel Reservation Requests</div>
       {tableLoading ? (
         <div>Table Loading...</div>
+      ) : hotelRequests.length === 0 ? (
+        <div className="d-flex justify-content-center align-items-center">
+          <h4>No Data Found</h4>
+        </div>
       ) : (
         <Table responsive bordered striped>
           {tableHeader}
