@@ -53,19 +53,6 @@ export const TopNav = () => {
               </Link>
             </Nav.Item>
           </Nav>
-          {appState.isAdmin ? (
-            <Nav>
-              <Nav.Item className="mx-2 my-1">Admin Panel</Nav.Item>
-            </Nav>
-          ) : (
-            <Nav className="me-auto">
-              <Nav.Item className="mx-2 my-1">
-                <Link to="/login">
-                  <Button variant="outline-dark">Log in</Button>
-                </Link>
-              </Nav.Item>
-            </Nav>
-          )}
         </Navbar.Collapse>
       </Container>
     </Navbar>
