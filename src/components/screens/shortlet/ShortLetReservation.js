@@ -93,7 +93,7 @@ const ShortLetReservation = () => {
         budgetPerDay: budgetPerDay,
         numberOfDays: numberOfDays,
         statusOfRequest: "Pending",
-        dateOfRequest: new Date().toDateString(),
+        dateOfRequest: new Date().toLocaleString(),
       });
 
       setReservationId(docRef.id);
