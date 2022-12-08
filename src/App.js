@@ -31,12 +31,6 @@ import Register from "./components/screens/auth/Register";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
 
-// Admin section
-import AdminLayout from "./components/layout/AdminLayout";
-import AdminHome from "./components/screens/admin/AdminHome";
-
-// TODO: Change alerts to toast notifications.
-
 function App() {
   return (
     <AppProvider>
@@ -78,15 +72,6 @@ function App() {
             element={<ShortLetReservation />}
           />
           <Route path="/diaspora-plans" element={<DiasporaHome />} />
-          {/* Admin Section */}
-          <Route
-            path="/admin-home"
-            element={
-              <AdminLayout>
-                <AdminHome />
-              </AdminLayout>
-            }
-          />
         </Routes>
       </BrowserRouter>
       <a
