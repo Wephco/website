@@ -10,6 +10,7 @@ import HotelTable from "../screens/admin/hotel/HotelTable";
 import MeetingRoomTable from "../screens/admin/meetingRoom/MeetingRoomTable";
 import OfficeSpaceTable from "../screens/admin/officeSpace/OfficeSpaceTable";
 import PropertyManagementTable from "../screens/admin/propertyManagement/PropertyManagementTable";
+import RealEstateTable from "../screens/admin/realEstate/RealEstateTable";
 import ShortletTable from "../screens/admin/shortlet/ShortletTable";
 
 const Dashboard = () => {
@@ -42,6 +43,9 @@ const Dashboard = () => {
                 <Nav.Item style={{ cursor: "pointer" }}>
                   <Nav.Link eventKey="seventh">Shortlets/Apartment</Nav.Link>
                 </Nav.Item>
+                <Nav.Item style={{ cursor: "pointer" }}>
+                  <Nav.Link eventKey="eigth">Real Estate</Nav.Link>
+                </Nav.Item>
               </Nav>
             </Col>
             <Col sm={9}>
@@ -66,6 +70,9 @@ const Dashboard = () => {
                 </Tab.Pane>
                 <Tab.Pane eventKey="seventh">
                   <ShortletTable />
+                </Tab.Pane>
+                <Tab.Pane eventKey="eigth">
+                  <RealEstateTable />
                 </Tab.Pane>
               </Tab.Content>
             </Col>
