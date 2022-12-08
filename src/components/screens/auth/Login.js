@@ -44,6 +44,7 @@ const Login = () => {
           imageUrl: user.photoURL,
           isAuthenticated: true,
         });
+
         navigate("/real-estate/review");
       })
       .catch((error) => {

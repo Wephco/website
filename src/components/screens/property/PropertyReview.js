@@ -79,6 +79,8 @@ const PropertyReview = () => {
         budget: budget,
         additionalNotes: notes,
         plan: paymentPlan,
+        status: "Pending",
+        dateOfRequest: new Date().toLocaleString(),
       });
 
       setReservationId(docRef.id);

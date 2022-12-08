@@ -21,6 +21,7 @@ import EventsReservation from "./components/screens/events/EventsReservation";
 import Events from "./components/screens/events/Events";
 import ShortLet from "./components/screens/shortlet/ShortLet";
 import ShortLetReservation from "./components/screens/shortlet/ShortLetReservation";
+import DiasporaHome from "./components/screens/diaspora/DiasporaHome";
 
 // Auth
 import Login from "./components/screens/auth/Login";
@@ -29,9 +30,6 @@ import Register from "./components/screens/auth/Register";
 // Stylesheet imports
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
-import DiasporaHome from "./components/screens/diaspora/DiasporaHome";
-
-// TODO: Change alerts to toast notifications.
 
 function App() {
   return (

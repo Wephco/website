@@ -95,6 +95,8 @@ const OfficeReservation = () => {
         workstations: workstations,
         budgetPerDay: budgetPerDay,
         numberOfDays: numberOfDays,
+        statusOfRequest: "Pending",
+        dateOfRequest: new Date().toLocaleString(),
       });
 
       setReservationId(docRef.id);
@@ -126,7 +128,11 @@ const OfficeReservation = () => {
         <div className="text-center" style={{ marginTop: "50px" }}>
           <Row>
             <Col>
-              <i style={{cursor:'pointer'}} onClick={() => navigate(-1)} className="bi bi-arrow-left">
+              <i
+                style={{ cursor: "pointer" }}
+                onClick={() => navigate(-1)}
+                className="bi bi-arrow-left"
+              >
                 Back
               </i>
             </Col>
