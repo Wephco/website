@@ -1,35 +1,35 @@
-import React, { useState } from "react";
-import axios from "axios";
-import { Form, Container, Button } from "react-bootstrap";
-import { useNavigate } from "react-router-dom";
-import { endpoints } from "../../../utils/URL";
+import React, { useState } from 'react';
+import { Form, Container, Button } from 'react-bootstrap';
+import { useNavigate } from 'react-router-dom';
+import { collection, addDoc } from 'firebase/firestore';
+import { db } from '../../../firebase/firebaseInitialisation';
 
 const ContactUs = () => {
   const navigate = useNavigate();
 
-  const [name, setName] = useState("");
-  const [location, setLocation] = useState("");
-  const [phone, setPhone] = useState("");
-  const [email, setEmail] = useState("");
-  const [message, setMessage] = useState("");
-  const [contactMethod, setContactMethod] = useState("");
+  const [name, setName] = useState('');
+  const [location, setLocation] = useState('');
+  const [phone, setPhone] = useState('');
+  const [email, setEmail] = useState('');
+  const [message, setMessage] = useState('');
+  const [contactMethod, setContactMethod] = useState('');
 
   const [loading, setLoading] = useState(false);
 
   const submit = async () => {
     if (
-      name === "" ||
-      location === "" ||
-      phone === "" ||
-      email === "" ||
-      message === ""
+      name === '' ||
+      location === '' ||
+      phone === '' ||
+      email === '' ||
+      message === ''
     ) {
-      alert("All fields are required.");
+      alert('All fields are required.');
       return;
     }
-    try {
-      setLoading(true);
 
+    setLoading(true);
+    try {
       const payload = {
         name: name,
         location: location,
@@ -37,12 +37,14 @@ const ContactUs = () => {
         email: email,
         message: message,
         contactMethod: contactMethod,
-        subject: "Real Estate",
       };
 
-      await axios.post(endpoints.Contact.mainURL, payload);
-      navigate("/thank-you");
+      await addDoc(collection(db, 'consultations'), payload);
+
+      navigate('/thank-you');
     } catch (error) {
+      console.log(error)
+      alert('Please try again later.');
     } finally {
       setLoading(false);
     }
@@ -51,87 +53,87 @@ const ContactUs = () => {
   return (
     <div>
       <Container>
-        <h3 className="text-center" style={{ marginTop: "30px" }}>
+        <h3 className='text-center' style={{ marginTop: '30px' }}>
           Speak to us for our expert opinion
         </h3>
-        <h5 className="text-center" style={{ marginTop: "10px" }}>
+        <h5 className='text-center' style={{ marginTop: '10px' }}>
           Book a call with our sales team to see how we can work together
         </h5>
-        <div className="row d-flex justify-content-center align-items-center">
-          <div className="col-md-6 col-sm-6 mt-2">
+        <div className='row d-flex justify-content-center align-items-center'>
+          <div className='col-md-6 col-sm-6 mt-2'>
             <Form>
               <fieldset disabled={loading}>
-                <Form.Group className="my-2">
+                <Form.Group className='my-2'>
                   <Form.Label>Name*</Form.Label>
                   <Form.Control
-                    type="text"
+                    type='text'
                     value={name}
                     onChange={(e) => setName(e.target.value)}
                   />
                 </Form.Group>
 
-                <Form.Group className="my-2">
+                <Form.Group className='my-2'>
                   <Form.Label>Location*</Form.Label>
                   <Form.Control
-                    type="text"
+                    type='text'
                     value={location}
                     onChange={(e) => setLocation(e.target.value)}
                   />
                 </Form.Group>
 
-                <Form.Group className="my-2">
+                <Form.Group className='my-2'>
                   <Form.Label>Phone*</Form.Label>
                   <Form.Control
-                    type="text"
+                    type='text'
                     value={phone}
                     onChange={(e) => setPhone(e.target.value)}
                   />
                 </Form.Group>
 
-                <Form.Group className="my-2">
+                <Form.Group className='my-2'>
                   <Form.Label>Email*</Form.Label>
                   <Form.Control
-                    type="email"
+                    type='email'
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                   />
                 </Form.Group>
 
-                <Form.Group className="my-2">
+                <Form.Group className='my-2'>
                   <Form.Label>Message*</Form.Label>
                   <Form.Control
-                    as="textarea"
+                    as='textarea'
                     value={message}
                     onChange={(e) => setMessage(e.target.value)}
                   />
                 </Form.Group>
 
-                <Form.Group className="my-2">
+                <Form.Group className='my-2'>
                   <Form.Label>Contact Method</Form.Label>
                   <Form.Check
-                    type="radio"
-                    label="Book a Meeting"
-                    name="contact"
-                    id="Book a Meeting"
+                    type='radio'
+                    label='Book a Meeting'
+                    name='contact'
+                    id='Book a Meeting'
                     onClick={(e) => setContactMethod(e.target.id)}
                   />
                   <Form.Check
-                    type="radio"
-                    label="Request a call"
-                    name="contact"
-                    id="Request a call"
+                    type='radio'
+                    label='Request a call'
+                    name='contact'
+                    id='Request a call'
                     onClick={(e) => setContactMethod(e.target.id)}
                   />
                 </Form.Group>
               </fieldset>
             </Form>
             {loading ? (
-              <div className="spinner-border text-dark mb-5" role="status">
-                <span className="visually-hidden">Loading...</span>
+              <div className='spinner-border text-dark mb-5' role='status'>
+                <span className='visually-hidden'>Loading...</span>
               </div>
             ) : (
-              <div className="d-grid gap-2 col-12 mt-3 mb-5">
-                <Button onClick={submit} variant="dark">
+              <div className='d-grid gap-2 col-12 mt-3 mb-5'>
+                <Button onClick={submit} variant='dark'>
                   Submit
                 </Button>
               </div>
